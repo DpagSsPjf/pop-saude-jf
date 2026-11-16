@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O que você precisa saber – Planejamento em Saúde JF</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7f8;
+      color: #1e293b;
+      margin: 0;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 32px 36px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .header {
+      text-align: center;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 18px;
+      margin-bottom: 20px;
+    }
+    .header-top {
+      font-size: 13px;
+      font-weight: bold;
+      color: #0f766e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .header h1 {
+      color: #2b6cb0;
+      font-size: 26px;
+      margin: 0 0 6px;
+    }
+    .header p {
+      color: #64748b;
+      font-size: 13px;
+      margin: 0 0 14px;
+    }
+    .legenda {
+      font-size: 12px;
+      color: #475569;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+    .search-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      padding: 12px 0;
+      z-index: 10;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 11px 14px;
+      border: 2px solid #0f766e;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+    .search-bar input:focus {
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+    }
+    .search-bar button {
+      background: #0f766e;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0 18px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .search-bar button:hover {
+      background: #115e59;
+    }
+    details {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      padding: 13px 16px;
+      background: #ffffff;
+      transition: border-color 0.15s;
+    }
+    details:hover {
+      border-color: #cbd5e1;
+    }
+    details[open] {
+      border-left: 4px solid #0f766e;
+    }
+    summary {
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+      color: #0f172a;
+      line-height: 1.4;
+    }
+    .conteudo-pop {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .conteudo-pop h3 {
+      color: #0f766e;
+      font-size: 15px;
+      margin: 16px 0 6px;
+    }
+    .conteudo-pop ul {
+      margin: 6px 0 12px 20px;
+      padding: 0;
+    }
+    .conteudo-pop li {
+      margin-bottom: 6px;
+    }
+    a { color: #0284c7; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    #status { font-size: 13px; color: #64748b; margin-bottom: 12px; }
+    .erro { color: #b91c1c; background: #fef2f2; padding: 12px; border-radius: 6px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-top">Secretaria de Saúde de Juiz de Fora • DPIS</div>
+      <h1>O que você precisa saber – Planejamento em Saúde JF</h1>
+      <p>Notícias, informações importantes e atualizações de normativas e planejamento do SUS</p>
+      <div class="legenda">
+        <span>🔴 <strong>Urgente:</strong> Prazos iminentes, prestação de contas e risco de glosa</span>
+        <span>🟡 <strong>Atenção:</strong> Alterações de fluxo, faturamento e diretrizes técnicas</span>
+        <span>🟢 <strong>Informativo:</strong> Habilitações, limites orçamentários e atos declaratórios</span>
+      </div>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="busca" placeholder="Pesquisar dentro de todos os POPs (ex: DaVita, FIT, RNDS, DigiSUS, Saldos)..." onkeyup="filtrarPOPs()">
+      <button onclick="limparBusca()">Limpar</button>
+    </div>
+
+    <div id="status">Sincronizando normativas com o documento oficial...</div>
+    <div id="lista"></div>
+  </div>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwIvQR1jsgLpoJDK19AFlf7013B3N9DetJtyIf79e_Dag_CIcLAXOkiBmI3LDoK0ZXv6Q/exec';
+
+    let todosPops = [];
+
+    fetch(API_URL)
+      .then(response => {
+        if (!response.ok) throw new Error('Falha na resposta do servidor');
+        return response.json();
+      })
+      .then(dados => {
+        todosPops = dados;
+        renderizar(todosPops, false);
+      })
+      .catch(erro => {
+        document.getElementById('status').innerHTML =
+          '<div class="erro">Não foi possível carregar os POPs automaticamente. Verifique se a implantação do App da Web foi publicada como "Qualquer pessoa".</div>';
+      });
+
+    function normalizar(str) {
+      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+
+    function limparBusca() {
+      document.getElementById('busca').value = '';
+      renderizar(todosPops, false);
+    }
+
+    function filtrarPOPs() {
+      const termo = normalizar(document.getElementById('busca').value.trim());
+      if (!termo) {
+        renderizar(todosPops, false);
+        return;
+      }
+      const filtrados = todosPops.filter(pop => {
+        const textoCompleto = normalizar(
+          pop.titulo + ' ' + pop.blocos.map(b => b.html.replace(/<[^>]+>/g, '')).join(' ')
+        );
+        return textoCompleto.indexOf(termo) !== -1;
+      });
+      renderizar(filtrados, true);
+    }
+
+    function renderizar(lista, abrirAutomatico) {
+      const container = document.getElementById('lista');
+      const status = document.getElementById('status');
+      container.innerHTML = '';
+
+      if (lista.length === 0) {
+        status.textContent = 'Nenhum POP encontrado para essa pesquisa.';
+        return;
+      }
+
+      status.textContent = 'Exibindo ' + lista.length + ' tópico(s). Clique em qualquer título para expandir.';
+
+      lista.forEach(pop => {
+        const details = document.createElement('details');
+        if (abrirAutomatico) details.open = true;
+
+        const summary = document.createElement('summary');
+        summary.textContent = pop.titulo;
+        details.appendChild(summary);
+
+        const divConteudo = document.createElement('div');
+        divConteudo.className = 'conteudo-pop';
+
+        let ulAtual = null;
+        pop.blocos.forEach(bloco => {
+          if (bloco.tipo === 'lista') {
+            if (!ulAtual) {
+              ulAtual = document.createElement('ul');
+              divConteudo.appendChild(ulAtual);
+            }
+            const li = document.createElement('li');
+            li.innerHTML = bloco.html;
+            ulAtual.appendChild(li);
+          } else {
+            ulAtual = null;
+            const el = document.createElement(bloco.tipo === 'subtitulo' ? 'h3' : 'p');
+            el.innerHTML = bloco.html;
+            divConteudo.appendChild(el);
+          }
+        });
+
+        details.appendChild(divConteudo);
+        container.appendChild(details);
+      });
+    }
+  </script>
+</body>
+</html>
