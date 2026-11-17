@@ -13,7 +13,7 @@
       padding: 24px 16px;
     }
     .container {
-      max-width: 920px;
+      max-width: 960px;
       margin: 0 auto;
       background: #ffffff;
       padding: 32px 36px;
@@ -26,14 +26,6 @@
       padding-bottom: 18px;
       margin-bottom: 20px;
     }
-    .header-top {
-      font-size: 13px;
-      font-weight: bold;
-      color: #0f766e;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-    }
     .header h1 {
       color: #2b6cb0;
       font-size: 26px;
@@ -42,7 +34,18 @@
     .header p {
       color: #64748b;
       font-size: 13px;
-      margin: 0 0 14px;
+      margin: 0 0 10px;
+    }
+    .ultima-atualizacao {
+      display: none;
+      font-size: 12px;
+      font-weight: bold;
+      color: #0f766e;
+      background: #f0fdfa;
+      border: 1px solid #ccfbf1;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 12px;
     }
     .legenda {
       font-size: 12px;
@@ -55,13 +58,12 @@
     .search-bar {
       display: flex;
       gap: 8px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       position: sticky;
       top: 0;
       background: #ffffff;
-      padding: 12px 0;
+      padding: 12px 0 8px;
       z-index: 10;
-      border-bottom: 1px solid #f1f5f9;
     }
     .search-bar input {
       flex: 1;
@@ -87,6 +89,56 @@
     .search-bar button:hover {
       background: #115e59;
     }
+    .pastas-wrapper {
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .pastas-label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #475569;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .pastas-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pasta-btn {
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pasta-btn:hover {
+      background: #e2e8f0;
+      border-color: #94a3b8;
+    }
+    .pasta-btn.ativa {
+      background: #0f766e;
+      color: #ffffff;
+      border-color: #0f766e;
+    }
+    .pasta-btn .badge {
+      background: rgba(0,0,0,0.08);
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+    }
+    .pasta-btn.ativa .badge {
+      background: rgba(255,255,255,0.22);
+    }
     details {
       border: 1px solid #e2e8f0;
       border-radius: 8px;
@@ -108,8 +160,23 @@
       color: #0f172a;
       line-height: 1.4;
     }
+    .tags-pop {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag-setor {
+      background: #e6fffa;
+      color: #0f766e;
+      border: 1px solid #99f6e4;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
     .conteudo-pop {
-      margin-top: 14px;
+      margin-top: 12px;
       padding-top: 12px;
       border-top: 1px solid #f1f5f9;
       font-size: 14px;
@@ -136,12 +203,13 @@
 <body>
   <div class="container">
     <div class="header">
-   <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px;">
-  <img src="pjf.jpg" alt="Prefeitura de Juiz de Fora - Secretaria de Saúde" style="height: 60px;">
-  <img src="dpis.jpg" alt="DPIS - Departamento de Planejamento e Informações em Saúde" style="height: 68px;">
-</div>
+      <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px;">
+        <img src="pjf.jpg" alt="Prefeitura de Juiz de Fora - Secretaria de Saúde" style="height: 60px;">
+        <img src="dpis.jpg" alt="DPIS - Departamento de Planejamento e Informações em Saúde" style="height: 68px;">
+      </div>
       <h1>O que você precisa saber – Planejamento em Saúde JF</h1>
       <p>Notícias, informações importantes e atualizações de normativas e planejamento do SUS</p>
+      <div id="ultima-atualizacao" class="ultima-atualizacao"></div>
       <div class="legenda">
         <span>🔴 <strong>Urgente:</strong> Prazos iminentes, prestação de contas e risco de glosa</span>
         <span>🟡 <strong>Atenção:</strong> Alterações de fluxo, faturamento e diretrizes técnicas</span>
@@ -150,8 +218,13 @@
     </div>
 
     <div class="search-bar">
-      <input type="text" id="busca" placeholder="Pesquisar dentro de todos os POPs (ex: DaVita, FIT, RNDS, DigiSUS, Saldos)..." onkeyup="filtrarPOPs()">
-      <button onclick="limparBusca()">Limpar</button>
+      <input type="text" id="busca" placeholder="Pesquisar dentro dos POPs (ex: DaVita, FIT, RNDS, DigiSUS, Saldos)..." onkeyup="aplicarFiltros()">
+      <button onclick="limparTudo()">Limpar</button>
+    </div>
+
+    <div class="pastas-wrapper">
+      <div class="pastas-label">📁 Filtrar por Subsecretaria / Departamento:</div>
+      <div class="pastas-bar" id="pastas-bar"></div>
     </div>
 
     <div id="status">Sincronizando normativas com o documento oficial...</div>
@@ -161,7 +234,22 @@
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwIvQR1jsgLpoJDK19AFlf7013B3N9DetJtyIf79e_Dag_CIcLAXOkiBmI3LDoK0ZXv6Q/exec';
 
+    const PASTAS = [
+      'TODOS',
+      'SSAS',
+      'SSAS_AP',
+      'SSAS_DSB',
+      'SSAS_DESM',
+      'SSAS_DCE',
+      'SSAS_DSMCA',
+      'SSRUE',
+      'HPS',
+      'SSVS',
+      'SSGIS'
+    ];
+
     let todosPops = [];
+    let pastaAtiva = 'TODOS';
 
     fetch(API_URL)
       .then(response => {
@@ -169,36 +257,85 @@
         return response.json();
       })
       .then(dados => {
-        todosPops = dados;
-        renderizar(todosPops, false);
+        const listaPops = Array.isArray(dados) ? dados : (dados.pops || []);
+
+        if (!Array.isArray(dados) && dados.ultimaAtualizacao) {
+          const elAtualizacao = document.getElementById('ultima-atualizacao');
+          elAtualizacao.textContent = '🕒 ' + dados.ultimaAtualizacao;
+          elAtualizacao.style.display = 'inline-block';
+        }
+
+        todosPops = listaPops.map(pop => {
+          const textoBruto = (
+            pop.titulo + ' ' + pop.blocos.map(b => b.html.replace(/<[^>]+>/g, ' ')).join(' ')
+          ).toUpperCase();
+
+          const setores = PASTAS.filter(sigla => {
+            if (sigla === 'TODOS') return false;
+            if (sigla === 'SSAS') {
+              return /\bSSAS(_[A-Z]+)?\b/.test(textoBruto);
+            }
+            const regex = new RegExp('\\b' + sigla + '\\b');
+            return regex.test(textoBruto);
+          });
+
+          return {
+            ...pop,
+            setores: setores,
+            textoNormalizado: normalizar(textoBruto)
+          };
+        });
+
+        montarBotoesPastas();
+        aplicarFiltros();
       })
       .catch(erro => {
         document.getElementById('status').innerHTML =
-          '<div class="erro">Não foi possível carregar os POPs automaticamente. Verifique se a implantação do App da Web foi publicada como "Qualquer pessoa".</div>';
+          '<div class="erro">Não foi possível carregar os POPs automaticamente. Verifique a conexão com o Apps Script.</div>';
       });
 
     function normalizar(str) {
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     }
 
-    function limparBusca() {
-      document.getElementById('busca').value = '';
-      renderizar(todosPops, false);
+    function montarBotoesPastas() {
+      const bar = document.getElementById('pastas-bar');
+      bar.innerHTML = '';
+
+      PASTAS.forEach(sigla => {
+        const qtd = sigla === 'TODOS'
+          ? todosPops.length
+          : todosPops.filter(p => p.setores.includes(sigla)).length;
+
+        const btn = document.createElement('button');
+        btn.className = 'pasta-btn' + (pastaAtiva === sigla ? ' ativa' : '');
+        btn.innerHTML = `<span>${sigla === 'TODOS' ? 'Todas as Pastas' : sigla}</span> <span class="badge">${qtd}</span>`;
+        btn.onclick = () => {
+          pastaAtiva = sigla;
+          montarBotoesPastas();
+          aplicarFiltros();
+        };
+        bar.appendChild(btn);
+      });
     }
 
-    function filtrarPOPs() {
+    function limparTudo() {
+      document.getElementById('busca').value = '';
+      pastaAtiva = 'TODOS';
+      montarBotoesPastas();
+      aplicarFiltros();
+    }
+
+    function aplicarFiltros() {
       const termo = normalizar(document.getElementById('busca').value.trim());
-      if (!termo) {
-        renderizar(todosPops, false);
-        return;
-      }
+
       const filtrados = todosPops.filter(pop => {
-        const textoCompleto = normalizar(
-          pop.titulo + ' ' + pop.blocos.map(b => b.html.replace(/<[^>]+>/g, '')).join(' ')
-        );
-        return textoCompleto.indexOf(termo) !== -1;
+        const batePasta = pastaAtiva === 'TODOS' || pop.setores.includes(pastaAtiva);
+        const bateTexto = !termo || pop.textoNormalizado.indexOf(termo) !== -1;
+        return batePasta && bateTexto;
       });
-      renderizar(filtrados, true);
+
+      renderizar(filtrados, Boolean(termo));
     }
 
     function renderizar(lista, abrirAutomatico) {
@@ -206,12 +343,14 @@
       const status = document.getElementById('status');
       container.innerHTML = '';
 
+      const labelPasta = pastaAtiva === 'TODOS' ? 'todas as pastas' : 'a pasta ' + pastaAtiva;
+
       if (lista.length === 0) {
-        status.textContent = 'Nenhum POP encontrado para essa pesquisa.';
+        status.textContent = 'Nenhum POP encontrado em ' + labelPasta + '.';
         return;
       }
 
-      status.textContent = 'Exibindo ' + lista.length + ' tópico(s). Clique em qualquer título para expandir.';
+      status.textContent = 'Exibindo ' + lista.length + ' tópico(s) em ' + labelPasta + '. Clique em qualquer título para expandir.';
 
       lista.forEach(pop => {
         const details = document.createElement('details');
@@ -220,6 +359,19 @@
         const summary = document.createElement('summary');
         summary.textContent = pop.titulo;
         details.appendChild(summary);
+
+        if (pop.setores.length > 0) {
+          const tagsDiv = document.createElement('div');
+          tagsDiv.className = 'tags-pop';
+          pop.setores.forEach(s => {
+            if (s === 'SSAS' && pop.setores.some(sub => sub.startsWith('SSAS_'))) return;
+            const span = document.createElement('span');
+            span.className = 'tag-setor';
+            span.textContent = '📁 ' + s;
+            tagsDiv.appendChild(span);
+          });
+          details.appendChild(tagsDiv);
+        }
 
         const divConteudo = document.createElement('div');
         divConteudo.className = 'conteudo-pop';
