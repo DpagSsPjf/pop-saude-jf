@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>O que você precisa saber – Planejamento em Saúde JF</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f7f8;
@@ -111,6 +114,13 @@
       padding-bottom: 14px;
       border-bottom: 1px solid #e2e8f0;
     }
+    .pastas-top-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
     .pastas-toggle-btn {
       background: #f1f5f9;
       color: #334155;
@@ -153,21 +163,18 @@
       display: none;
     }
     .pastas-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
       margin-top: 10px;
+      width: 100%;
     }
     .pastas-bar.recolhido {
       display: none;
     }
-    .quebra-linha-pastas {
-      flex-basis: 100%;
-      height: 0;
-    }
-    @media (max-width: 960px) {
-      .quebra-linha-pastas {
-        display: none;
+    @media (max-width: 900px) {
+      .pastas-bar {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
     .pasta-btn {
@@ -175,17 +182,21 @@
       color: #1e293b;
       border: 1px solid #cbd5e1;
       border-radius: 20px;
-      padding: 5px 6px 5px 10px;
+      padding: 6px 10px;
       font-size: 11.5px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.15s;
       display: flex;
-      flex: 1 1 auto;
+      width: 100%;
       align-items: center;
-      justify-content: space-between;
-      gap: 5px;
+      justify-content: center;
+      gap: 8px;
       white-space: nowrap;
+    }
+    .pasta-btn.btn-todas {
+      width: auto;
+      padding: 6px 14px;
     }
     .pasta-btn:hover {
       background: #f1f5f9;
@@ -204,7 +215,7 @@
       color: #1e293b;
       border: 1px solid #e2e8f0;
       border-radius: 12px;
-      padding: 1px 6px;
+      padding: 1px 7px;
       font-size: 10.5px;
       font-weight: bold;
     }
@@ -310,11 +321,14 @@
     </div>
 
     <div class="pastas-wrapper">
-      <button type="button" class="pastas-toggle-btn" id="btn-toggle-pastas" onclick="alternarExibicaoPastas()" title="Clique para ocultar ou exibir as pastas">
-        <span>📁 Filtrar por Subsecretaria / Departamento</span>
-        <span id="filtro-ativo-aviso" class="filtro-ativo-aviso"></span>
-        <span class="seta-toggle">▾</span>
-      </button>
+      <div class="pastas-top-row">
+        <button type="button" class="pastas-toggle-btn" id="btn-toggle-pastas" onclick="alternarExibicaoPastas()" title="Clique para ocultar ou exibir as pastas">
+          <span>📁 Filtrar por Subsecretaria / Departamento</span>
+          <span id="filtro-ativo-aviso" class="filtro-ativo-aviso"></span>
+          <span class="seta-toggle">▾</span>
+        </button>
+        <div id="todas-pastas-slot"></div>
+      </div>
       <div class="pastas-bar" id="pastas-bar"></div>
     </div>
 
@@ -326,7 +340,6 @@
     const API_URL = 'https://script.google.com/macros/s/AKfycbwIvQR1jsgLpoJDK19AFlf7013B3N9DetJtyIf79e_Dag_CIcLAXOkiBmI3LDoK0ZXv6Q/exec';
 
     const PASTAS = [
-      'TODOS',
       'SSAS',
       'SSAS_AP',
       'SSAS_DSB',
@@ -364,7 +377,6 @@
           ).toUpperCase();
 
           const setores = PASTAS.filter(sigla => {
-            if (sigla === 'TODOS') return false;
             if (sigla === 'SSAS') {
               return /\bSSAS(_[A-Z]+)?\b/.test(textoBruto);
             }
@@ -427,43 +439,41 @@
       aplicarFiltros();
     }
 
+    function criarBotaoPasta(sigla, popsDaPasta, classeExtra) {
+      const qtdVermelhos = popsDaPasta.filter(p => p.cor === 'vermelho').length;
+      const qtdAmarelos  = popsDaPasta.filter(p => p.cor === 'amarelo').length;
+      const qtdVerdes    = popsDaPasta.filter(p => p.cor === 'verde').length;
+
+      const btn = document.createElement('button');
+      btn.className = 'pasta-btn' + (classeExtra ? ' ' + classeExtra : '') + (pastaAtiva === sigla ? ' ativa' : '');
+      btn.innerHTML = `
+        <span>${sigla === 'TODOS' ? 'Todas as Pastas' : sigla}</span>
+        <span class="contadores-cor" title="Urgentes (Vermelho) • Atenção (Amarelo) • Informativos (Verde)">
+          <span class="c-item"><span class="dot dot-vermelho"></span>${qtdVermelhos}</span>
+          <span class="c-item"><span class="dot dot-amarelo"></span>${qtdAmarelos}</span>
+          <span class="c-item"><span class="dot dot-verde"></span>${qtdVerdes}</span>
+        </span>
+      `;
+      btn.onclick = () => {
+        pastaAtiva = sigla;
+        montarBotoesPastas();
+        atualizarAvisoFiltroOculto();
+        aplicarFiltros();
+      };
+      return btn;
+    }
+
     function montarBotoesPastas() {
+      const slotTodas = document.getElementById('todas-pastas-slot');
       const bar = document.getElementById('pastas-bar');
+      slotTodas.innerHTML = '';
       bar.innerHTML = '';
 
-      PASTAS.forEach((sigla, idx) => {
-        const popsDaPasta = sigla === 'TODOS'
-          ? todosPops
-          : todosPops.filter(p => p.setores.includes(sigla));
+      slotTodas.appendChild(criarBotaoPasta('TODOS', todosPops, 'btn-todas'));
 
-        const qtdVermelhos = popsDaPasta.filter(p => p.cor === 'vermelho').length;
-        const qtdAmarelos  = popsDaPasta.filter(p => p.cor === 'amarelo').length;
-        const qtdVerdes    = popsDaPasta.filter(p => p.cor === 'verde').length;
-
-        const btn = document.createElement('button');
-        btn.className = 'pasta-btn' + (pastaAtiva === sigla ? ' ativa' : '');
-        btn.innerHTML = `
-          <span>${sigla === 'TODOS' ? 'Todas as Pastas' : sigla}</span>
-          <span class="contadores-cor" title="Urgentes (Vermelho) • Atenção (Amarelo) • Informativos (Verde)">
-            <span class="c-item"><span class="dot dot-vermelho"></span>${qtdVermelhos}</span>
-            <span class="c-item"><span class="dot dot-amarelo"></span>${qtdAmarelos}</span>
-            <span class="c-item"><span class="dot dot-verde"></span>${qtdVerdes}</span>
-          </span>
-        `;
-        btn.onclick = () => {
-          pastaAtiva = sigla;
-          montarBotoesPastas();
-          atualizarAvisoFiltroOculto();
-          aplicarFiltros();
-        };
-        bar.appendChild(btn);
-
-        // Garante exatamente 6 pastas na primeira linha e 5 na segunda
-        if (idx === 5) {
-          const quebra = document.createElement('div');
-          quebra.className = 'quebra-linha-pastas';
-          bar.appendChild(quebra);
-        }
+      PASTAS.forEach(sigla => {
+        const popsDaPasta = todosPops.filter(p => p.setores.includes(sigla));
+        bar.appendChild(criarBotaoPasta(sigla, popsDaPasta, ''));
       });
     }
 
