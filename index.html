@@ -13,7 +13,7 @@
       padding: 24px 16px;
     }
     .container {
-      max-width: 960px;
+      max-width: 980px;
       margin: 0 auto;
       background: #ffffff;
       padding: 32px 36px;
@@ -29,6 +29,7 @@
     .header h1 {
       color: #0f766e;
       font-size: 26px;
+      line-height: 1.25;
       margin: 0 0 6px;
     }
     .header p {
@@ -53,7 +54,23 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 14px;
+      gap: 10px;
+    }
+    .legenda-item {
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .legenda-item:hover {
+      background: #f1f5f9;
+    }
+    .legenda-item.cor-ativa {
+      background: #f0fdfa;
+      border-color: #0f766e;
+      color: #0f172a;
     }
     .search-bar {
       display: flex;
@@ -98,7 +115,7 @@
       font-size: 12px;
       font-weight: bold;
       color: #475569;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       text-transform: uppercase;
       letter-spacing: 0.4px;
     }
@@ -108,21 +125,21 @@
       gap: 8px;
     }
     .pasta-btn {
-      background: #f1f5f9;
-      color: #334155;
+      background: #f8fafc;
+      color: #1e293b;
       border: 1px solid #cbd5e1;
-      border-radius: 20px;
-      padding: 6px 14px;
+      border-radius: 22px;
+      padding: 5px 8px 5px 13px;
       font-size: 12px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.15s;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
     .pasta-btn:hover {
-      background: #e2e8f0;
+      background: #f1f5f9;
       border-color: #94a3b8;
     }
     .pasta-btn.ativa {
@@ -130,15 +147,36 @@
       color: #ffffff;
       border-color: #0f766e;
     }
-    .pasta-btn .badge {
-      background: rgba(0,0,0,0.08);
-      padding: 1px 6px;
-      border-radius: 10px;
+    .contadores-cor {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      color: #1e293b;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 2px 8px;
       font-size: 11px;
+      font-weight: bold;
     }
-    .pasta-btn.ativa .badge {
-      background: rgba(255,255,255,0.22);
+    .pasta-btn.ativa .contadores-cor {
+      border-color: transparent;
     }
+    .c-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .dot-vermelho { background-color: #dc2626; }
+    .dot-amarelo  { background-color: #eab308; }
+    .dot-verde    { background-color: #16a34a; }
+
     details {
       border: 1px solid #e2e8f0;
       border-radius: 8px;
@@ -211,9 +249,9 @@
       <p>Notícias, informações importantes e atualizações de normativas e planejamento do SUS</p>
       <div id="ultima-atualizacao" class="ultima-atualizacao"></div>
       <div class="legenda">
-        <span>🔴 <strong>Urgente:</strong> Prazos iminentes, prestação de contas e risco de glosa</span>
-        <span>🟡 <strong>Atenção:</strong> Alterações de fluxo, faturamento e diretrizes técnicas</span>
-        <span>🟢 <strong>Informativo:</strong> Habilitações, limites orçamentários e atos declaratórios</span>
+        <span class="legenda-item" id="leg-vermelho" onclick="alternarCor('vermelho')" title="Clique para filtrar apenas os Urgentes">🔴 <strong>Urgente:</strong> Prazos iminentes, prestação de contas e risco de glosa</span>
+        <span class="legenda-item" id="leg-amarelo" onclick="alternarCor('amarelo')" title="Clique para filtrar apenas os de Atenção">🟡 <strong>Atenção:</strong> Alterações de fluxo, faturamento e diretrizes técnicas</span>
+        <span class="legenda-item" id="leg-verde" onclick="alternarCor('verde')" title="Clique para filtrar apenas os Informativos">🟢 <strong>Informativo:</strong> Habilitações, limites orçamentários e atos declaratórios</span>
       </div>
     </div>
 
@@ -223,7 +261,7 @@
     </div>
 
     <div class="pastas-wrapper">
-      <div class="pastas-label">📁 Filtrar por Subsecretaria / Departamento:</div>
+      <div class="pastas-label">📁 Filtrar por Subsecretaria / Departamento (🔴 Urgente • 🟡 Atenção • 🟢 Informativo):</div>
       <div class="pastas-bar" id="pastas-bar"></div>
     </div>
 
@@ -250,6 +288,7 @@
 
     let todosPops = [];
     let pastaAtiva = 'TODOS';
+    let corAtiva = 'TODAS';
 
     fetch(API_URL)
       .then(response => {
@@ -279,8 +318,18 @@
             return regex.test(textoBruto);
           });
 
+          let cor = 'outro';
+          if (/🔴|\[URGENTE/i.test(pop.titulo)) {
+            cor = 'vermelho';
+          } else if (/🟡|\[ATEN[CÇ][AÃ]O/i.test(pop.titulo)) {
+            cor = 'amarelo';
+          } else if (/🟢|\[INFORMATIVO/i.test(pop.titulo)) {
+            cor = 'verde';
+          }
+
           return {
             ...pop,
+            cor: cor,
             setores: setores,
             textoNormalizado: normalizar(textoBruto)
           };
@@ -298,18 +347,38 @@
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     }
 
+    function alternarCor(cor) {
+      corAtiva = (corAtiva === cor) ? 'TODAS' : cor;
+      ['vermelho', 'amarelo', 'verde'].forEach(c => {
+        const el = document.getElementById('leg-' + c);
+        if (el) el.classList.toggle('cor-ativa', corAtiva === c);
+      });
+      aplicarFiltros();
+    }
+
     function montarBotoesPastas() {
       const bar = document.getElementById('pastas-bar');
       bar.innerHTML = '';
 
       PASTAS.forEach(sigla => {
-        const qtd = sigla === 'TODOS'
-          ? todosPops.length
-          : todosPops.filter(p => p.setores.includes(sigla)).length;
+        const popsDaPasta = sigla === 'TODOS'
+          ? todosPops
+          : todosPops.filter(p => p.setores.includes(sigla));
+
+        const qtdVermelhos = popsDaPasta.filter(p => p.cor === 'vermelho').length;
+        const qtdAmarelos  = popsDaPasta.filter(p => p.cor === 'amarelo').length;
+        const qtdVerdes    = popsDaPasta.filter(p => p.cor === 'verde').length;
 
         const btn = document.createElement('button');
         btn.className = 'pasta-btn' + (pastaAtiva === sigla ? ' ativa' : '');
-        btn.innerHTML = `<span>${sigla === 'TODOS' ? 'Todas as Pastas' : sigla}</span> <span class="badge">${qtd}</span>`;
+        btn.innerHTML = `
+          <span>${sigla === 'TODOS' ? 'Todas as Pastas' : sigla}</span>
+          <span class="contadores-cor" title="Urgentes (Vermelho) • Atenção (Amarelo) • Informativos (Verde)">
+            <span class="c-item"><span class="dot dot-vermelho"></span>${qtdVermelhos}</span>
+            <span class="c-item"><span class="dot dot-amarelo"></span>${qtdAmarelos}</span>
+            <span class="c-item"><span class="dot dot-verde"></span>${qtdVerdes}</span>
+          </span>
+        `;
         btn.onclick = () => {
           pastaAtiva = sigla;
           montarBotoesPastas();
@@ -322,6 +391,11 @@
     function limparTudo() {
       document.getElementById('busca').value = '';
       pastaAtiva = 'TODOS';
+      corAtiva = 'TODAS';
+      ['vermelho', 'amarelo', 'verde'].forEach(c => {
+        const el = document.getElementById('leg-' + c);
+        if (el) el.classList.remove('cor-ativa');
+      });
       montarBotoesPastas();
       aplicarFiltros();
     }
@@ -331,8 +405,9 @@
 
       const filtrados = todosPops.filter(pop => {
         const batePasta = pastaAtiva === 'TODOS' || pop.setores.includes(pastaAtiva);
+        const bateCor = corAtiva === 'TODAS' || pop.cor === corAtiva;
         const bateTexto = !termo || pop.textoNormalizado.indexOf(termo) !== -1;
-        return batePasta && bateTexto;
+        return batePasta && bateCor && bateTexto;
       });
 
       renderizar(filtrados, Boolean(termo));
@@ -344,13 +419,19 @@
       container.innerHTML = '';
 
       const labelPasta = pastaAtiva === 'TODOS' ? 'todas as pastas' : 'a pasta ' + pastaAtiva;
+      const nomesCor = { vermelho: 'Urgente (🔴)', amarelo: 'Atenção (🟡)', verde: 'Informativo (🟢)' };
+      const labelCor = corAtiva === 'TODAS' ? '' : ' • filtro ' + nomesCor[corAtiva];
+
+      const v = lista.filter(p => p.cor === 'vermelho').length;
+      const a = lista.filter(p => p.cor === 'amarelo').length;
+      const g = lista.filter(p => p.cor === 'verde').length;
 
       if (lista.length === 0) {
-        status.textContent = 'Nenhum POP encontrado em ' + labelPasta + '.';
+        status.textContent = 'Nenhum POP encontrado em ' + labelPasta + labelCor + '.';
         return;
       }
 
-      status.textContent = 'Exibindo ' + lista.length + ' tópico(s) em ' + labelPasta + '. Clique em qualquer título para expandir.';
+      status.textContent = `Exibindo ${lista.length} tópico(s) em ${labelPasta}${labelCor} (🔴 ${v} • 🟡 ${a} • 🟢 ${g}). Clique em qualquer título para expandir.`;
 
       lista.forEach(pop => {
         const details = document.createElement('details');
