@@ -13,10 +13,10 @@
       padding: 24px 16px;
     }
     .container {
-      max-width: 980px;
+      max-width: 1060px;
       margin: 0 auto;
       background: #ffffff;
-      padding: 32px 36px;
+      padding: 32px 32px;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
@@ -111,32 +111,79 @@
       padding-bottom: 14px;
       border-bottom: 1px solid #e2e8f0;
     }
-    .pastas-label {
+    .pastas-toggle-btn {
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 7px 13px;
       font-size: 12px;
       font-weight: bold;
-      color: #475569;
-      margin-bottom: 10px;
+      cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 0.4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .pastas-toggle-btn:hover {
+      background: #e2e8f0;
+      border-color: #94a3b8;
+      color: #0f172a;
+    }
+    .pastas-toggle-btn .seta-toggle {
+      font-size: 12px;
+      color: #0f766e;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+    .pastas-toggle-btn.recolhido .seta-toggle {
+      transform: rotate(-90deg);
+    }
+    .filtro-ativo-aviso {
+      background: #0f766e;
+      color: #ffffff;
+      font-size: 10.5px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: none;
+      letter-spacing: 0;
+      display: none;
     }
     .pastas-bar {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .pastas-bar.recolhido {
+      display: none;
+    }
+    .quebra-linha-pastas {
+      flex-basis: 100%;
+      height: 0;
+    }
+    @media (max-width: 920px) {
+      .quebra-linha-pastas {
+        display: none;
+      }
     }
     .pasta-btn {
       background: #f8fafc;
       color: #1e293b;
       border: 1px solid #cbd5e1;
-      border-radius: 22px;
-      padding: 5px 8px 5px 13px;
-      font-size: 12px;
+      border-radius: 20px;
+      padding: 4px 6px 4px 10px;
+      font-size: 11.5px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.15s;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      white-space: nowrap;
     }
     .pasta-btn:hover {
       background: #f1f5f9;
@@ -150,13 +197,13 @@
     .contadores-cor {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       background: #ffffff;
       color: #1e293b;
       border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 2px 8px;
-      font-size: 11px;
+      border-radius: 12px;
+      padding: 1px 6px;
+      font-size: 10.5px;
       font-weight: bold;
     }
     .pasta-btn.ativa .contadores-cor {
@@ -165,11 +212,11 @@
     .c-item {
       display: inline-flex;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
     }
     .dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       display: inline-block;
     }
@@ -261,7 +308,11 @@
     </div>
 
     <div class="pastas-wrapper">
-      <div class="pastas-label">📁 Filtrar por Subsecretaria / Departamento:</div>
+      <button type="button" class="pastas-toggle-btn" id="btn-toggle-pastas" onclick="alternarExibicaoPastas()" title="Clique para ocultar ou exibir as pastas">
+        <span>📁 Filtrar por Subsecretaria / Departamento</span>
+        <span id="filtro-ativo-aviso" class="filtro-ativo-aviso"></span>
+        <span class="seta-toggle">▾</span>
+      </button>
       <div class="pastas-bar" id="pastas-bar"></div>
     </div>
 
@@ -289,6 +340,7 @@
     let todosPops = [];
     let pastaAtiva = 'TODOS';
     let corAtiva = 'TODAS';
+    let pastasVisiveis = true;
 
     fetch(API_URL)
       .then(response => {
@@ -347,6 +399,23 @@
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     }
 
+    function alternarExibicaoPastas() {
+      pastasVisiveis = !pastasVisiveis;
+      document.getElementById('pastas-bar').classList.toggle('recolhido', !pastasVisiveis);
+      document.getElementById('btn-toggle-pastas').classList.toggle('recolhido', !pastasVisiveis);
+      atualizarAvisoFiltroOculto();
+    }
+
+    function atualizarAvisoFiltroOculto() {
+      const aviso = document.getElementById('filtro-ativo-aviso');
+      if (!pastasVisiveis && pastaAtiva !== 'TODOS') {
+        aviso.textContent = 'Pasta: ' + pastaAtiva;
+        aviso.style.display = 'inline-block';
+      } else {
+        aviso.style.display = 'none';
+      }
+    }
+
     function alternarCor(cor) {
       corAtiva = (corAtiva === cor) ? 'TODAS' : cor;
       ['vermelho', 'amarelo', 'verde'].forEach(c => {
@@ -360,7 +429,7 @@
       const bar = document.getElementById('pastas-bar');
       bar.innerHTML = '';
 
-      PASTAS.forEach(sigla => {
+      PASTAS.forEach((sigla, idx) => {
         const popsDaPasta = sigla === 'TODOS'
           ? todosPops
           : todosPops.filter(p => p.setores.includes(sigla));
@@ -382,9 +451,17 @@
         btn.onclick = () => {
           pastaAtiva = sigla;
           montarBotoesPastas();
+          atualizarAvisoFiltroOculto();
           aplicarFiltros();
         };
         bar.appendChild(btn);
+
+        // Garante exatamente 6 pastas na primeira linha e 5 na segunda
+        if (idx === 5) {
+          const quebra = document.createElement('div');
+          quebra.className = 'quebra-linha-pastas';
+          bar.appendChild(quebra);
+        }
       });
     }
 
@@ -397,6 +474,7 @@
         if (el) el.classList.remove('cor-ativa');
       });
       montarBotoesPastas();
+      atualizarAvisoFiltroOculto();
       aplicarFiltros();
     }
 
