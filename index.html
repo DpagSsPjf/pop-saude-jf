@@ -4,50 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>O que você precisa saber – Planejamento em Saúde JF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
     }
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f7f8;
+      font-family: 'Inter', Arial, sans-serif;
+      background-color: #f1f5f9;
       color: #1e293b;
       margin: 0;
-      padding: 24px 16px;
+      padding: 24px 16px 40px;
+      -webkit-font-smoothing: antialiased;
     }
     .container {
-      max-width: 1060px;
+      max-width: 1140px;
       margin: 0 auto;
       background: #ffffff;
-      padding: 32px 32px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      padding: 32px 34px 28px;
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+      border: 1px solid #e2e8f0;
     }
     .header {
       text-align: center;
       border-bottom: 1px solid #e2e8f0;
       padding-bottom: 18px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
+    }
+    .header-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 12px;
     }
     .header h1 {
       color: #0f766e;
       font-size: 26px;
+      font-weight: 800;
       line-height: 1.25;
       margin: 0 0 6px;
+      letter-spacing: -0.3px;
     }
     .header p {
       color: #64748b;
-      font-size: 13px;
+      font-size: 13.5px;
       margin: 0 0 10px;
     }
     .ultima-atualizacao {
       display: none;
       font-size: 12px;
-      font-weight: bold;
+      font-weight: 600;
       color: #0f766e;
       background: #f0fdfa;
-      border: 1px solid #ccfbf1;
-      padding: 4px 12px;
+      border: 1px solid #99f6e4;
+      padding: 4px 14px;
       border-radius: 999px;
       margin-bottom: 12px;
     }
@@ -57,155 +71,128 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
     .legenda-item {
       cursor: pointer;
-      padding: 4px 10px;
-      border-radius: 16px;
+      padding: 5px 12px;
+      border-radius: 999px;
       border: 1px solid transparent;
+      background: #f8fafc;
       transition: all 0.15s;
       user-select: none;
     }
     .legenda-item:hover {
       background: #f1f5f9;
+      border-color: #cbd5e1;
     }
     .legenda-item.cor-ativa {
       background: #f0fdfa;
       border-color: #0f766e;
       color: #0f172a;
+      box-shadow: 0 1px 4px rgba(15, 118, 110, 0.12);
     }
+
+    /* Barra de Pesquisa */
     .search-bar {
       display: flex;
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       position: sticky;
       top: 0;
-      background: #ffffff;
-      padding: 12px 0 8px;
-      z-index: 10;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(6px);
+      padding: 10px 0 8px;
+      z-index: 20;
     }
     .search-bar input {
       flex: 1;
-      padding: 11px 14px;
+      padding: 11px 15px;
       border: 2px solid #0f766e;
-      border-radius: 8px;
+      border-radius: 9px;
       font-size: 14px;
+      font-family: inherit;
       outline: none;
+      transition: box-shadow 0.15s;
     }
     .search-bar input:focus {
-      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.16);
     }
     .search-bar button {
       background: #0f766e;
       color: #fff;
       border: none;
-      border-radius: 8px;
-      padding: 0 18px;
-      font-weight: bold;
+      border-radius: 9px;
+      padding: 0 20px;
+      font-weight: 700;
+      font-family: inherit;
       cursor: pointer;
       font-size: 13px;
+      transition: background 0.15s;
     }
     .search-bar button:hover {
       background: #115e59;
     }
+
+    /* Grade de Pastas em 2 Linhas Uniformes */
     .pastas-wrapper {
-      margin-bottom: 18px;
-      padding-bottom: 14px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
       border-bottom: 1px solid #e2e8f0;
-    }
-    .pastas-top-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    .pastas-toggle-btn {
-      background: #f1f5f9;
-      color: #334155;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 7px 13px;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.15s;
-      user-select: none;
-    }
-    .pastas-toggle-btn:hover {
-      background: #e2e8f0;
-      border-color: #94a3b8;
-      color: #0f172a;
-    }
-    .pastas-toggle-btn .seta-toggle {
-      font-size: 12px;
-      color: #0f766e;
-      transition: transform 0.2s;
-      display: inline-block;
-    }
-    .pastas-toggle-btn.recolhido .seta-toggle {
-      transform: rotate(-90deg);
-    }
-    .filtro-ativo-aviso {
-      background: #0f766e;
-      color: #ffffff;
-      font-size: 10.5px;
-      padding: 2px 8px;
-      border-radius: 10px;
-      text-transform: none;
-      letter-spacing: 0;
-      display: none;
     }
     .pastas-bar {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 8px;
-      margin-top: 10px;
       width: 100%;
-    }
-    .pastas-bar.recolhido {
-      display: none;
-    }
-    @media (max-width: 900px) {
-      .pastas-bar {
-        grid-template-columns: repeat(2, 1fr);
-      }
     }
     .pasta-btn {
       background: #f8fafc;
       color: #1e293b;
       border: 1px solid #cbd5e1;
-      border-radius: 20px;
-      padding: 6px 10px;
+      border-radius: 999px;
+      padding: 6px 8px;
       font-size: 11.5px;
-      font-weight: bold;
+      font-weight: 700;
+      font-family: inherit;
       cursor: pointer;
       transition: all 0.15s;
       display: flex;
       width: 100%;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       white-space: nowrap;
     }
     .pasta-btn.btn-todas {
-      width: auto;
-      padding: 6px 14px;
+      grid-column: span 2;
+    }
+    @media (max-width: 980px) {
+      .pastas-bar {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .pasta-btn.btn-todas {
+        grid-column: span 3;
+      }
+    }
+    @media (max-width: 600px) {
+      .pastas-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .pasta-btn.btn-todas {
+        grid-column: span 2;
+      }
     }
     .pasta-btn:hover {
       background: #f1f5f9;
       border-color: #94a3b8;
+      transform: translateY(-1px);
     }
     .pasta-btn.ativa {
       background: #0f766e;
       color: #ffffff;
       border-color: #0f766e;
+      box-shadow: 0 2px 6px rgba(15, 118, 110, 0.22);
     }
     .contadores-cor {
       display: inline-flex;
@@ -214,10 +201,10 @@
       background: #ffffff;
       color: #1e293b;
       border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 1px 7px;
+      border-radius: 999px;
+      padding: 1px 6px;
       font-size: 10.5px;
-      font-weight: bold;
+      font-weight: 700;
     }
     .pasta-btn.ativa .contadores-cor {
       border-color: transparent;
@@ -237,53 +224,167 @@
     .dot-amarelo  { background-color: #eab308; }
     .dot-verde    { background-color: #16a34a; }
 
+    /* Barra de Status + Botão Expandir/Recolher */
+    .barra-status {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    #status {
+      font-size: 13px;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-expandir-todos {
+      background: #ffffff;
+      color: #0f766e;
+      border: 1px solid #99f6e4;
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: none;
+    }
+    .btn-expandir-todos:hover {
+      background: #f0fdfa;
+      border-color: #0f766e;
+    }
+
+    /* Spinner de Carregamento */
+    .spinner {
+      width: 15px;
+      height: 15px;
+      border: 2px solid #cbd5e1;
+      border-top-color: #0f766e;
+      border-radius: 50%;
+      animation: girar 0.7s linear infinite;
+      display: inline-block;
+    }
+    @keyframes girar {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Cards dos POPs com Semáforo Lateral */
     details {
       border: 1px solid #e2e8f0;
-      border-radius: 8px;
+      border-left: 5px solid #cbd5e1;
+      border-radius: 10px;
       margin-bottom: 12px;
-      padding: 13px 16px;
+      padding: 14px 18px;
       background: #ffffff;
-      transition: border-color 0.15s;
+      transition: all 0.15s;
     }
+    details.card-vermelho { border-left-color: #dc2626; }
+    details.card-amarelo  { border-left-color: #eab308; }
+    details.card-verde    { border-left-color: #16a34a; }
+
     details:hover {
       border-color: #cbd5e1;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
     }
+    details.card-vermelho:hover { border-left-color: #dc2626; }
+    details.card-amarelo:hover  { border-left-color: #eab308; }
+    details.card-verde:hover    { border-left-color: #16a34a; }
+
     details[open] {
-      border-left: 4px solid #0f766e;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
     }
+    details.destaque-link {
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.3);
+    }
+
     summary {
-      font-weight: bold;
+      font-weight: 700;
       font-size: 15px;
       cursor: pointer;
       color: #0f172a;
-      line-height: 1.4;
+      line-height: 1.45;
+      outline: none;
+    }
+    .topo-card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
     }
     .tags-pop {
-      margin-top: 8px;
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
     }
     .tag-setor {
-      background: #e6fffa;
+      background: #f0fdfa;
       color: #0f766e;
       border: 1px solid #99f6e4;
       font-size: 11px;
-      font-weight: bold;
+      font-weight: 700;
       padding: 2px 8px;
-      border-radius: 4px;
+      border-radius: 5px;
     }
+
+    /* Botões Executivos dentro do POP */
+    .acoes-pop {
+      display: none;
+      gap: 6px;
+    }
+    details[open] .acoes-pop {
+      display: inline-flex;
+    }
+    .btn-acao-pop {
+      background: #f8fafc;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 3px 9px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-acao-pop:hover {
+      background: #f0fdfa;
+      color: #0f766e;
+      border-color: #0f766e;
+    }
+
+    /* Conteúdo Interno do POP */
     .conteudo-pop {
       margin-top: 12px;
       padding-top: 12px;
       border-top: 1px solid #f1f5f9;
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.65;
+      color: #334155;
+    }
+    .conteudo-pop p {
+      margin: 0 0 10px;
+    }
+    .callout-meta {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 3px solid #0f766e;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 8px !important;
+      color: #1e293b;
     }
     .conteudo-pop h3 {
       color: #0f766e;
       font-size: 15px;
-      margin: 16px 0 6px;
+      font-weight: 700;
+      margin: 18px 0 6px;
     }
     .conteudo-pop ul {
       margin: 6px 0 12px 20px;
@@ -292,16 +393,98 @@
     .conteudo-pop li {
       margin-bottom: 6px;
     }
-    a { color: #0284c7; text-decoration: none; }
+    a { color: #0284c7; text-decoration: none; font-weight: 500; }
     a:hover { text-decoration: underline; }
-    #status { font-size: 13px; color: #64748b; margin-bottom: 12px; }
-    .erro { color: #b91c1c; background: #fef2f2; padding: 12px; border-radius: 6px; font-size: 13px; }
+
+    /* Marca-texto da Pesquisa */
+    mark.hl {
+      background-color: #fef08a;
+      color: #0f172a;
+      padding: 0 2px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    .erro {
+      color: #b91c1c;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    /* Rodapé Institucional */
+    .footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    /* Botão Flutuante Voltar ao Topo */
+    #btn-topo {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #0f766e;
+      color: #ffffff;
+      border: none;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      transition: background 0.15s, transform 0.15s;
+    }
+    #btn-topo:hover {
+      background: #115e59;
+      transform: translateY(-2px);
+    }
+
+    /* Modo de Impressão / PDF */
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .container {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .search-bar,
+      .pastas-wrapper,
+      .barra-status,
+      .legenda,
+      .acoes-pop,
+      #btn-topo {
+        display: none !important;
+      }
+      body.imprimindo-unico details:not(.pop-imprimindo) {
+        display: none !important;
+      }
+      details {
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 12px;">
+      <div class="header-logos">
         <img src="pjf.jpg" alt="Prefeitura de Juiz de Fora - Secretaria de Saúde" style="height: 60px;">
         <img src="dpis.jpg" alt="DPIS - Departamento de Planejamento e Informações em Saúde" style="height: 68px;">
       </div>
@@ -316,30 +499,33 @@
     </div>
 
     <div class="search-bar">
-      <input type="text" id="busca" placeholder="Pesquisar dentro dos POPs (ex: DaVita, FIT, RNDS, DigiSUS, Saldos)..." onkeyup="aplicarFiltros()">
+      <input type="text" id="busca" placeholder="Pesquisar dentro dos POPs (ex: DaVita, FIT, RNDS, DigiSUS, Saldos)..." oninput="aplicarFiltros()">
       <button onclick="limparTudo()">Limpar</button>
     </div>
 
     <div class="pastas-wrapper">
-      <div class="pastas-top-row">
-        <button type="button" class="pastas-toggle-btn" id="btn-toggle-pastas" onclick="alternarExibicaoPastas()" title="Clique para ocultar ou exibir as pastas">
-          <span>📁 Filtrar por Subsecretaria / Departamento</span>
-          <span id="filtro-ativo-aviso" class="filtro-ativo-aviso"></span>
-          <span class="seta-toggle">▾</span>
-        </button>
-        <div id="todas-pastas-slot"></div>
-      </div>
       <div class="pastas-bar" id="pastas-bar"></div>
     </div>
 
-    <div id="status">Sincronizando normativas com o documento oficial...</div>
+    <div class="barra-status">
+      <div id="status"><span class="spinner"></span> Sincronizando normativas com o documento oficial...</div>
+      <button type="button" id="btn-expandir-todos" class="btn-expandir-todos" onclick="alternarExpandirTodos()">Expandir todos</button>
+    </div>
+
     <div id="lista"></div>
+
+    <div class="footer">
+      Departamento de Planejamento e Informações em Saúde (DPIS) • Secretaria de Saúde • Prefeitura de Juiz de Fora
+    </div>
   </div>
+
+  <button id="btn-topo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Voltar ao topo">↑</button>
 
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwIvQR1jsgLpoJDK19AFlf7013B3N9DetJtyIf79e_Dag_CIcLAXOkiBmI3LDoK0ZXv6Q/exec';
 
     const PASTAS = [
+      'TODOS',
       'SSAS',
       'SSAS_AP',
       'SSAS_DSB',
@@ -352,10 +538,29 @@
       'SSGIS'
     ];
 
+    const NOMES_SETORES = {
+      'TODOS': 'Exibir todas as pastas da Secretaria de Saúde',
+      'SSAS': 'Subsecretaria de Atenção à Saúde (Geral)',
+      'SSAS_AP': 'Atenção Primária à Saúde',
+      'SSAS_DSB': 'Departamento de Saúde Bucal',
+      'SSAS_DESM': 'Departamento de Saúde Mental',
+      'SSAS_DCE': 'Departamento de Clínicas Especializadas',
+      'SSAS_DSMCA': 'Departamento de Saúde da Mulher, Criança e Adolescente',
+      'SSRUE': 'Subsecretaria de Regulação, Urgência e Emergência',
+      'HPS': 'Hospital de Pronto Socorro Dr. Mozart Teixeira',
+      'SSVS': 'Subsecretaria de Vigilância em Saúde',
+      'SSGIS': 'Subsecretaria de Gestão Institucional e Sistemas'
+    };
+
     let todosPops = [];
     let pastaAtiva = 'TODOS';
     let corAtiva = 'TODAS';
-    let pastasVisiveis = true;
+    let todosExpandidos = false;
+
+    window.addEventListener('scroll', () => {
+      const btn = document.getElementById('btn-topo');
+      btn.style.display = window.scrollY > 320 ? 'flex' : 'none';
+    });
 
     fetch(API_URL)
       .then(response => {
@@ -371,12 +576,13 @@
           elAtualizacao.style.display = 'inline-block';
         }
 
-        todosPops = listaPops.map(pop => {
+        todosPops = listaPops.map((pop, idx) => {
           const textoBruto = (
             pop.titulo + ' ' + pop.blocos.map(b => b.html.replace(/<[^>]+>/g, ' ')).join(' ')
           ).toUpperCase();
 
           const setores = PASTAS.filter(sigla => {
+            if (sigla === 'TODOS') return false;
             if (sigla === 'SSAS') {
               return /\bSSAS(_[A-Z]+)?\b/.test(textoBruto);
             }
@@ -395,6 +601,7 @@
 
           return {
             ...pop,
+            id: 'pop-' + (idx + 1),
             cor: cor,
             setores: setores,
             textoNormalizado: normalizar(textoBruto)
@@ -403,6 +610,7 @@
 
         montarBotoesPastas();
         aplicarFiltros();
+        verificarLinkDireto();
       })
       .catch(erro => {
         document.getElementById('status').innerHTML =
@@ -413,21 +621,35 @@
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     }
 
-    function alternarExibicaoPastas() {
-      pastasVisiveis = !pastasVisiveis;
-      document.getElementById('pastas-bar').classList.toggle('recolhido', !pastasVisiveis);
-      document.getElementById('btn-toggle-pastas').classList.toggle('recolhido', !pastasVisiveis);
-      atualizarAvisoFiltroOculto();
+    function escaparHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
     }
 
-    function atualizarAvisoFiltroOculto() {
-      const aviso = document.getElementById('filtro-ativo-aviso');
-      if (!pastasVisiveis && pastaAtiva !== 'TODOS') {
-        aviso.textContent = 'Pasta: ' + pastaAtiva;
-        aviso.style.display = 'inline-block';
-      } else {
-        aviso.style.display = 'none';
-      }
+    function grifarHtml(html, termoOriginal) {
+      const termo = normalizar(termoOriginal.trim());
+      if (!termo || termo.length < 2) return html;
+
+      const partes = html.split(/(<[^>]+>)/g);
+      return partes.map(parte => {
+        if (parte.startsWith('<')) return parte;
+        const norm = normalizar(parte);
+        let idx = norm.indexOf(termo);
+        if (idx === -1) return parte;
+
+        let resultado = '';
+        let pos = 0;
+        while (idx !== -1) {
+          resultado += parte.substring(pos, idx);
+          resultado += '<mark class="hl">' + parte.substring(idx, idx + termo.length) + '</mark>';
+          pos = idx + termo.length;
+          idx = norm.indexOf(termo, pos);
+        }
+        resultado += parte.substring(pos);
+        return resultado;
+      }).join('');
     }
 
     function alternarCor(cor) {
@@ -439,41 +661,36 @@
       aplicarFiltros();
     }
 
-    function criarBotaoPasta(sigla, popsDaPasta, classeExtra) {
-      const qtdVermelhos = popsDaPasta.filter(p => p.cor === 'vermelho').length;
-      const qtdAmarelos  = popsDaPasta.filter(p => p.cor === 'amarelo').length;
-      const qtdVerdes    = popsDaPasta.filter(p => p.cor === 'verde').length;
-
-      const btn = document.createElement('button');
-      btn.className = 'pasta-btn' + (classeExtra ? ' ' + classeExtra : '') + (pastaAtiva === sigla ? ' ativa' : '');
-      btn.innerHTML = `
-        <span>${sigla === 'TODOS' ? 'Todas as Pastas' : sigla}</span>
-        <span class="contadores-cor" title="Urgentes (Vermelho) • Atenção (Amarelo) • Informativos (Verde)">
-          <span class="c-item"><span class="dot dot-vermelho"></span>${qtdVermelhos}</span>
-          <span class="c-item"><span class="dot dot-amarelo"></span>${qtdAmarelos}</span>
-          <span class="c-item"><span class="dot dot-verde"></span>${qtdVerdes}</span>
-        </span>
-      `;
-      btn.onclick = () => {
-        pastaAtiva = sigla;
-        montarBotoesPastas();
-        atualizarAvisoFiltroOculto();
-        aplicarFiltros();
-      };
-      return btn;
-    }
-
     function montarBotoesPastas() {
-      const slotTodas = document.getElementById('todas-pastas-slot');
       const bar = document.getElementById('pastas-bar');
-      slotTodas.innerHTML = '';
       bar.innerHTML = '';
 
-      slotTodas.appendChild(criarBotaoPasta('TODOS', todosPops, 'btn-todas'));
-
       PASTAS.forEach(sigla => {
-        const popsDaPasta = todosPops.filter(p => p.setores.includes(sigla));
-        bar.appendChild(criarBotaoPasta(sigla, popsDaPasta, ''));
+        const popsDaPasta = sigla === 'TODOS'
+          ? todosPops
+          : todosPops.filter(p => p.setores.includes(sigla));
+
+        const qtdVermelhos = popsDaPasta.filter(p => p.cor === 'vermelho').length;
+        const qtdAmarelos  = popsDaPasta.filter(p => p.cor === 'amarelo').length;
+        const qtdVerdes    = popsDaPasta.filter(p => p.cor === 'verde').length;
+
+        const btn = document.createElement('button');
+        btn.className = 'pasta-btn' + (sigla === 'TODOS' ? ' btn-todas' : '') + (pastaAtiva === sigla ? ' ativa' : '');
+        btn.title = NOMES_SETORES[sigla] || sigla;
+        btn.innerHTML = `
+          <span>${sigla === 'TODOS' ? 'Todas as Pastas' : sigla}</span>
+          <span class="contadores-cor">
+            <span class="c-item"><span class="dot dot-vermelho"></span>${qtdVermelhos}</span>
+            <span class="c-item"><span class="dot dot-amarelo"></span>${qtdAmarelos}</span>
+            <span class="c-item"><span class="dot dot-verde"></span>${qtdVerdes}</span>
+          </span>
+        `;
+        btn.onclick = () => {
+          pastaAtiva = sigla;
+          montarBotoesPastas();
+          aplicarFiltros();
+        };
+        bar.appendChild(btn);
       });
     }
 
@@ -481,17 +698,64 @@
       document.getElementById('busca').value = '';
       pastaAtiva = 'TODOS';
       corAtiva = 'TODAS';
+      todosExpandidos = false;
       ['vermelho', 'amarelo', 'verde'].forEach(c => {
         const el = document.getElementById('leg-' + c);
         if (el) el.classList.remove('cor-ativa');
       });
+      if (window.location.hash) {
+        history.replaceState(null, null, ' ');
+      }
       montarBotoesPastas();
-      atualizarAvisoFiltroOculto();
       aplicarFiltros();
     }
 
+    function alternarExpandirTodos() {
+      todosExpandidos = !todosExpandidos;
+      const cards = document.querySelectorAll('#lista details');
+      cards.forEach(c => c.open = todosExpandidos);
+      const btn = document.getElementById('btn-expandir-todos');
+      btn.textContent = todosExpandidos ? 'Recolher todos' : 'Expandir todos';
+    }
+
+    function copiarLinkPop(id, btnEl) {
+      const url = window.location.origin + window.location.pathname + '#' + id;
+      navigator.clipboard.writeText(url).then(() => {
+        const original = btnEl.innerHTML;
+        btnEl.innerHTML = '✅ Link copiado!';
+        setTimeout(() => { btnEl.innerHTML = original; }, 2000);
+      });
+    }
+
+    function imprimirPop(id) {
+      const card = document.getElementById(id);
+      if (!card) return;
+      card.open = true;
+      document.body.classList.add('imprimindo-unico');
+      card.classList.add('pop-imprimindo');
+      window.print();
+      setTimeout(() => {
+        document.body.classList.remove('imprimindo-unico');
+        card.classList.remove('pop-imprimindo');
+      }, 500);
+    }
+
+    function verificarLinkDireto() {
+      const hash = window.location.hash.replace('#', '');
+      if (!hash) return;
+      const card = document.getElementById(hash);
+      if (card) {
+        card.open = true;
+        card.classList.add('destaque-link');
+        setTimeout(() => {
+          card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      }
+    }
+
     function aplicarFiltros() {
-      const termo = normalizar(document.getElementById('busca').value.trim());
+      const termoOriginal = document.getElementById('busca').value.trim();
+      const termo = normalizar(termoOriginal);
 
       const filtrados = todosPops.filter(pop => {
         const batePasta = pastaAtiva === 'TODOS' || pop.setores.includes(pastaAtiva);
@@ -500,13 +764,17 @@
         return batePasta && bateCor && bateTexto;
       });
 
-      renderizar(filtrados, Boolean(termo));
+      renderizar(filtrados, termoOriginal);
     }
 
-    function renderizar(lista, abrirAutomatico) {
+    function renderizar(lista, termoOriginal) {
       const container = document.getElementById('lista');
       const status = document.getElementById('status');
+      const btnExpandir = document.getElementById('btn-expandir-todos');
       container.innerHTML = '';
+
+      const abrirAutomatico = Boolean(termoOriginal);
+      todosExpandidos = abrirAutomatico;
 
       const labelPasta = pastaAtiva === 'TODOS' ? 'todas as pastas' : 'a pasta ' + pastaAtiva;
       const nomesCor = { vermelho: 'Urgente (🔴)', amarelo: 'Atenção (🟡)', verde: 'Informativo (🟢)' };
@@ -518,49 +786,72 @@
 
       if (lista.length === 0) {
         status.textContent = 'Nenhum POP encontrado em ' + labelPasta + labelCor + '.';
+        btnExpandir.style.display = 'none';
         return;
       }
 
       status.textContent = `Exibindo ${lista.length} tópico(s) em ${labelPasta}${labelCor} (🔴 ${v} • 🟡 ${a} • 🟢 ${g}). Clique em qualquer título para expandir.`;
+      btnExpandir.style.display = 'inline-block';
+      btnExpandir.textContent = abrirAutomatico ? 'Recolher todos' : 'Expandir todos';
 
       lista.forEach(pop => {
         const details = document.createElement('details');
+        details.id = pop.id;
+        details.className = 'card-' + pop.cor;
         if (abrirAutomatico) details.open = true;
 
         const summary = document.createElement('summary');
-        summary.textContent = pop.titulo;
+        const tituloSeguro = escaparHtml(pop.titulo);
+        summary.innerHTML = abrirAutomatico ? grifarHtml(tituloSeguro, termoOriginal) : tituloSeguro;
         details.appendChild(summary);
 
-        if (pop.setores.length > 0) {
-          const tagsDiv = document.createElement('div');
-          tagsDiv.className = 'tags-pop';
-          pop.setores.forEach(s => {
-            if (s === 'SSAS' && pop.setores.some(sub => sub.startsWith('SSAS_'))) return;
-            const span = document.createElement('span');
-            span.className = 'tag-setor';
-            span.textContent = '📁 ' + s;
-            tagsDiv.appendChild(span);
-          });
-          details.appendChild(tagsDiv);
-        }
+        const metaRow = document.createElement('div');
+        metaRow.className = 'topo-card-meta';
+
+        const tagsDiv = document.createElement('div');
+        tagsDiv.className = 'tags-pop';
+        pop.setores.forEach(s => {
+          if (s === 'SSAS' && pop.setores.some(sub => sub.startsWith('SSAS_'))) return;
+          const span = document.createElement('span');
+          span.className = 'tag-setor';
+          span.title = NOMES_SETORES[s] || s;
+          span.textContent = '📁 ' + s;
+          tagsDiv.appendChild(span);
+        });
+        metaRow.appendChild(tagsDiv);
+
+        const acoesDiv = document.createElement('div');
+        acoesDiv.className = 'acoes-pop';
+        acoesDiv.innerHTML = `
+          <button type="button" class="btn-acao-pop" onclick="copiarLinkPop('${pop.id}', this)" title="Copiar link direto para este POP">🔗 Copiar link</button>
+          <button type="button" class="btn-acao-pop" onclick="imprimirPop('${pop.id}')" title="Imprimir ou salvar em PDF apenas este POP">🖨️ Imprimir / PDF</button>
+        `;
+        metaRow.appendChild(acoesDiv);
+        details.appendChild(metaRow);
 
         const divConteudo = document.createElement('div');
         divConteudo.className = 'conteudo-pop';
 
         let ulAtual = null;
         pop.blocos.forEach(bloco => {
+          const htmlProcessado = abrirAutomatico ? grifarHtml(bloco.html, termoOriginal) : bloco.html;
+
           if (bloco.tipo === 'lista') {
             if (!ulAtual) {
               ulAtual = document.createElement('ul');
               divConteudo.appendChild(ulAtual);
             }
             const li = document.createElement('li');
-            li.innerHTML = bloco.html;
+            li.innerHTML = htmlProcessado;
             ulAtual.appendChild(li);
           } else {
             ulAtual = null;
             const el = document.createElement(bloco.tipo === 'subtitulo' ? 'h3' : 'p');
-            el.innerHTML = bloco.html;
+            const textoLimpo = bloco.html.replace(/<[^>]+>/g, '').trim();
+            if (bloco.tipo !== 'subtitulo' && /^(Ato Normativo:|Área de Impacto:)/i.test(textoLimpo)) {
+              el.className = 'callout-meta';
+            }
+            el.innerHTML = htmlProcessado;
             divConteudo.appendChild(el);
           }
         });
