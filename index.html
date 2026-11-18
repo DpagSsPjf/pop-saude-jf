@@ -452,6 +452,9 @@
 
     /* Modo de Impressão / PDF */
     @media print {
+      @page {
+        margin: 14mm;
+      }
       body {
         background: #ffffff;
         padding: 0;
@@ -461,6 +464,10 @@
         border: none;
         padding: 0;
         max-width: 100%;
+      }
+      .header {
+        padding-bottom: 12px;
+        margin-bottom: 14px;
       }
       .search-bar,
       .pastas-wrapper,
@@ -474,9 +481,20 @@
         display: none !important;
       }
       details {
+        display: block !important;
         border: 1px solid #cbd5e1 !important;
+        border-left-width: 5px !important;
         box-shadow: none !important;
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+      }
+      summary, h3, .callout-meta, li {
         break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      h3 {
+        break-after: avoid;
+        page-break-after: avoid;
       }
     }
   </style>
