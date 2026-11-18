@@ -784,13 +784,13 @@
       const a = lista.filter(p => p.cor === 'amarelo').length;
       const g = lista.filter(p => p.cor === 'verde').length;
 
-      if (lista.length === 0) {
+     if (lista.length === 0) {
         status.textContent = 'Nenhum POP encontrado em ' + labelPasta + labelCor + '.';
         btnExpandir.style.display = 'none';
         return;
       }
 
-      status.textContent = `Exibindo ${lista.length} tópico(s) em ${labelPasta}${labelCor} (🔴 ${v} • 🟡 ${a} • 🟢 ${g}). Clique em qualquer título para expandir.`;
+      status.textContent = '';
       btnExpandir.style.display = 'inline-block';
       btnExpandir.textContent = abrirAutomatico ? 'Recolher todos' : 'Expandir todos';
 
