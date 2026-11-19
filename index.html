@@ -224,22 +224,68 @@
       transform: scale(0.97);
     }
 
-    /* Grade de Pastas em 2 Linhas Uniformes */
+    /* Grade de Pastas em 2 Linhas Uniformes + Cápsula Liquid Glass Deslizante */
     .pastas-wrapper {
       margin-bottom: 16px;
       padding-bottom: 16px;
       border-bottom: 1px solid rgba(15, 23, 42, 0.08);
     }
     .pastas-bar {
+      position: relative;
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 8px;
       width: 100%;
     }
+    .pasta-indicador {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.94), rgba(13, 148, 136, 0.85));
+      backdrop-filter: blur(18px) saturate(190%);
+      -webkit-backdrop-filter: blur(18px) saturate(190%);
+      border: 1px solid rgba(255, 255, 255, 0.48);
+      box-shadow:
+        0 8px 24px rgba(15, 118, 110, 0.32),
+        0 2px 6px rgba(15, 118, 110, 0.16),
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.55),
+        inset 0 -1px 2px rgba(15, 23, 42, 0.12);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      will-change: transform, width, height;
+      transition:
+        transform 0.48s var(--apple-ease),
+        width 0.48s var(--apple-ease),
+        height 0.48s var(--apple-ease),
+        box-shadow 0.35s var(--apple-ease),
+        opacity 0.2s ease;
+    }
+    .pasta-indicador::after {
+      content: '';
+      position: absolute;
+      inset: 1px 10% auto 10%;
+      height: 46%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+    .pasta-indicador.sem-transicao {
+      transition: none !important;
+    }
+    .pasta-indicador.deslizando {
+      box-shadow:
+        0 12px 30px rgba(15, 118, 110, 0.42),
+        0 0 20px rgba(20, 184, 166, 0.34),
+        inset 0 1.5px 1.5px rgba(255, 255, 255, 0.72);
+    }
     .pasta-btn {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.46));
-      backdrop-filter: blur(16px) saturate(170%);
-      -webkit-backdrop-filter: blur(16px) saturate(170%);
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.70), rgba(255, 255, 255, 0.42));
+      backdrop-filter: blur(12px) saturate(170%);
+      -webkit-backdrop-filter: blur(12px) saturate(170%);
       color: #1e293b;
       border: 1px solid rgba(255, 255, 255, 0.85);
       border-radius: 999px;
@@ -249,7 +295,13 @@
       font-family: inherit;
       cursor: pointer;
       box-shadow: var(--glass-shadow-sm);
-      transition: transform 0.25s var(--apple-ease), background 0.2s, box-shadow 0.2s, color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      transition:
+        transform 0.25s var(--apple-ease),
+        background 0.32s var(--apple-ease),
+        border-color 0.32s var(--apple-ease),
+        box-shadow 0.32s var(--apple-ease),
+        color 0.28s var(--apple-ease);
       display: flex;
       width: 100%;
       align-items: center;
@@ -260,8 +312,8 @@
     .pasta-btn.btn-todas {
       grid-column: span 2;
     }
-    .pasta-btn:hover {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.72));
+    .pasta-btn:not(.ativa):hover {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.90), rgba(255, 255, 255, 0.68));
       transform: translateY(-1.5px);
       box-shadow: 0 8px 20px rgba(15, 23, 42, 0.09), inset 0 1px 1px #ffffff;
     }
@@ -269,10 +321,12 @@
       transform: scale(0.97);
     }
     .pasta-btn.ativa {
-      background: linear-gradient(135deg, rgba(15, 118, 110, 0.94), rgba(13, 148, 136, 0.86));
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
       color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.42);
-      box-shadow: 0 8px 22px rgba(15, 118, 110, 0.30), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+      border-color: transparent;
+      box-shadow: none;
     }
     .contadores-cor {
       display: inline-flex;
@@ -286,6 +340,7 @@
       font-size: 10.5px;
       font-weight: 700;
       box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05);
+      transition: background 0.3s var(--apple-ease);
     }
     .pasta-btn.ativa .contadores-cor {
       background: rgba(255, 255, 255, 0.94);
@@ -448,6 +503,21 @@
     }
     @keyframes girar {
       to { transform: rotate(360deg); }
+    }
+
+    /* Entrada Suave dos Cards ao Trocar de Pasta */
+    @keyframes cardSurgirApple {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.992);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    details.card-entrando {
+      animation: cardSurgirApple 0.4s var(--apple-ease) both;
     }
 
     /* Cards dos POPs em Liquid Glass com Transições Suaves Estilo Apple */
@@ -920,6 +990,7 @@
         box-shadow: none !important;
         break-inside: auto !important;
         page-break-inside: auto !important;
+        animation: none !important;
       }
       .pop-body {
         height: auto !important;
@@ -1042,6 +1113,7 @@
     let ordenacaoAtiva = 'recentes';
     let todosExpandidos = false;
     let timerBusca = null;
+    let timerBrilhoIndicador = null;
     let cacheCarregado = false;
     let tamanhoFonteAtual = 14;
 
@@ -1067,6 +1139,16 @@
     });
 
     window.addEventListener('hashchange', verificarLinkDireto);
+    window.addEventListener('resize', () => atualizarEstadoBotoesPasta(false));
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => atualizarEstadoBotoesPasta(false));
+    }
+
+    if (typeof ResizeObserver === 'function') {
+      const ro = new ResizeObserver(() => atualizarEstadoBotoesPasta(false));
+      ro.observe(document.getElementById('pastas-bar'));
+    }
 
     try {
       const cacheTexto = localStorage.getItem(CACHE_KEY);
@@ -1274,7 +1356,7 @@
       });
 
       montarBotoesPastas();
-      aplicarFiltros(abertosAntes);
+      aplicarFiltros(abertosAntes, false);
       verificarLinkDireto();
     }
 
@@ -1366,7 +1448,7 @@
 
     function agendarBusca() {
       clearTimeout(timerBusca);
-      timerBusca = setTimeout(() => aplicarFiltros(), 150);
+      timerBusca = setTimeout(() => aplicarFiltros(null, false), 150);
     }
 
     function ajustarFonte(delta) {
@@ -1377,7 +1459,7 @@
 
     function alterarOrdenacao(valor) {
       ordenacaoAtiva = valor;
-      aplicarFiltros();
+      aplicarFiltros(null, true);
     }
 
     function atualizarUrlPasta() {
@@ -1397,12 +1479,95 @@
         const el = document.getElementById('leg-' + c);
         if (el) el.classList.toggle('cor-ativa', corAtiva === c);
       });
-      aplicarFiltros();
+      aplicarFiltros(null, true);
+    }
+
+    function selecionarPasta(sigla) {
+      if (pastaAtiva === sigla) return;
+      pastaAtiva = sigla;
+      atualizarUrlPasta();
+      atualizarEstadoBotoesPasta(true);
+      aplicarFiltros(null, true);
+    }
+
+    function atualizarEstadoBotoesPasta(animar) {
+      const bar = document.getElementById('pastas-bar');
+      const indicador = document.getElementById('pasta-indicador');
+      if (!bar || !indicador) return;
+
+      const botoes = bar.querySelectorAll('.pasta-btn');
+      let btnAtivo = null;
+      botoes.forEach(btn => {
+        const ativo = btn.dataset.pasta === pastaAtiva;
+        btn.classList.toggle('ativa', ativo);
+        if (ativo) btnAtivo = btn;
+      });
+
+      if (!btnAtivo || btnAtivo.offsetWidth === 0) {
+        return;
+      }
+
+      const jaVisivel = indicador.dataset.posicionado === '1';
+      const usarAnimacao = animar && jaVisivel && !REDUZIR_MOVIMENTO;
+
+      if (!usarAnimacao) {
+        indicador.classList.add('sem-transicao');
+      } else {
+        indicador.classList.remove('sem-transicao');
+        indicador.classList.add('deslizando');
+        clearTimeout(timerBrilhoIndicador);
+        timerBrilhoIndicador = setTimeout(() => {
+          indicador.classList.remove('deslizando');
+        }, 480);
+      }
+
+      indicador.style.width = btnAtivo.offsetWidth + 'px';
+      indicador.style.height = btnAtivo.offsetHeight + 'px';
+      indicador.style.transform = `translate3d(${btnAtivo.offsetLeft}px, ${btnAtivo.offsetTop}px, 0)`;
+      indicador.style.opacity = '1';
+      indicador.dataset.posicionado = '1';
+
+      if (!usarAnimacao) {
+        void indicador.offsetWidth;
+        indicador.classList.remove('sem-transicao');
+      }
     }
 
     function montarBotoesPastas() {
       const bar = document.getElementById('pastas-bar');
+      const botoesExistentes = bar.querySelectorAll('.pasta-btn');
+
+      if (botoesExistentes.length === PASTAS.length) {
+        botoesExistentes.forEach(btn => {
+          const sigla = btn.dataset.pasta;
+          const popsDaPasta = sigla === 'TODOS'
+            ? todosPops
+            : todosPops.filter(p => p.setores.includes(sigla));
+
+          const qtdVermelhos = popsDaPasta.filter(p => p.cor === 'vermelho').length;
+          const qtdAmarelos  = popsDaPasta.filter(p => p.cor === 'amarelo').length;
+          const qtdVerdes    = popsDaPasta.filter(p => p.cor === 'verde').length;
+
+          const cont = btn.querySelector('.contadores-cor');
+          if (cont) {
+            cont.innerHTML = `
+              <span class="c-item"><span class="dot dot-vermelho"></span>${qtdVermelhos}</span>
+              <span class="c-item"><span class="dot dot-amarelo"></span>${qtdAmarelos}</span>
+              <span class="c-item"><span class="dot dot-verde"></span>${qtdVerdes}</span>
+            `;
+          }
+        });
+        requestAnimationFrame(() => atualizarEstadoBotoesPasta(false));
+        return;
+      }
+
       bar.innerHTML = '';
+
+      const indicador = document.createElement('div');
+      indicador.id = 'pasta-indicador';
+      indicador.className = 'pasta-indicador';
+      indicador.setAttribute('aria-hidden', 'true');
+      bar.appendChild(indicador);
 
       PASTAS.forEach(sigla => {
         const popsDaPasta = sigla === 'TODOS'
@@ -1414,6 +1579,8 @@
         const qtdVerdes    = popsDaPasta.filter(p => p.cor === 'verde').length;
 
         const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.dataset.pasta = sigla;
         btn.className = 'pasta-btn' + (sigla === 'TODOS' ? ' btn-todas' : '') + (pastaAtiva === sigla ? ' ativa' : '');
         btn.title = NOMES_SETORES[sigla] || sigla;
         btn.innerHTML = `
@@ -1424,14 +1591,11 @@
             <span class="c-item"><span class="dot dot-verde"></span>${qtdVerdes}</span>
           </span>
         `;
-        btn.onclick = () => {
-          pastaAtiva = sigla;
-          atualizarUrlPasta();
-          montarBotoesPastas();
-          aplicarFiltros();
-        };
+        btn.onclick = () => selecionarPasta(sigla);
         bar.appendChild(btn);
       });
+
+      requestAnimationFrame(() => atualizarEstadoBotoesPasta(false));
     }
 
     function atualizarBannerUrgente() {
@@ -1466,8 +1630,8 @@
         if (el) el.classList.remove('cor-ativa');
       });
       atualizarUrlPasta();
-      montarBotoesPastas();
-      aplicarFiltros();
+      atualizarEstadoBotoesPasta(true);
+      aplicarFiltros(null, true);
     }
 
     function alternarExpandirTodos() {
@@ -1532,8 +1696,8 @@
           const el = document.getElementById('leg-' + c);
           if (el) el.classList.remove('cor-ativa');
         });
-        montarBotoesPastas();
-        aplicarFiltros();
+        atualizarEstadoBotoesPasta(false);
+        aplicarFiltros(null, false);
         card = document.getElementById(hash);
       }
 
@@ -1549,7 +1713,7 @@
       }
     }
 
-    function aplicarFiltros(abertosAntes) {
+    function aplicarFiltros(abertosAntes, animarEntrada = false) {
       const termoOriginal = document.getElementById('busca').value.trim();
       const termo = normalizar(termoOriginal);
 
@@ -1568,10 +1732,10 @@
       }
 
       atualizarBannerUrgente();
-      renderizar(filtrados, termoOriginal, abertosAntes);
+      renderizar(filtrados, termoOriginal, abertosAntes, animarEntrada);
     }
 
-    function renderizar(lista, termoOriginal, abertosAntes) {
+    function renderizar(lista, termoOriginal, abertosAntes, animarEntrada = false) {
       const container = document.getElementById('lista');
       const status = document.getElementById('status');
       const controles = document.getElementById('controles-lista');
@@ -1597,10 +1761,16 @@
 
       const dotClasse = { vermelho: 'dot-vermelho', amarelo: 'dot-amarelo', verde: 'dot-verde', outro: '' };
 
-      lista.forEach(pop => {
+      lista.forEach((pop, idxCard) => {
         const details = document.createElement('details');
         details.id = pop.id;
         details.className = 'card-' + pop.cor;
+
+        if (animarEntrada && !REDUZIR_MOVIMENTO) {
+          details.classList.add('card-entrando');
+          details.style.animationDelay = Math.min(idxCard, 7) * 26 + 'ms';
+        }
+
         const iniciaAberto = abrirAutomatico || (abertosAntes && abertosAntes.has(pop.id));
         if (iniciaAberto) {
           details.open = true;
