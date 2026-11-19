@@ -7,6 +7,7 @@
 
   <!-- Favicon e Prévia Institucional (WhatsApp / Redes) -->
   <link rel="icon" type="image/jpeg" href="dpis.jpg">
+  <link rel="apple-touch-icon" href="dpis.jpg">
   <meta name="description" content="Painel oficial de normativas, portarias, notas técnicas e POPs de planejamento do SUS – DPIS / Secretaria de Saúde de Juiz de Fora.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="O que você precisa saber – Planejamento em Saúde JF">
@@ -139,6 +140,7 @@
       font-family: inherit;
       outline: none;
       transition: box-shadow 0.15s;
+      min-width: 0;
     }
     .search-bar input:focus {
       box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.16);
@@ -154,6 +156,7 @@
       cursor: pointer;
       font-size: 13px;
       transition: background 0.15s;
+      white-space: nowrap;
     }
     .search-bar button:hover {
       background: #115e59;
@@ -968,7 +971,7 @@
       const idsUsados = {};
 
       todosPops = listaPops.map((pop, idx) => {
-        const textoBlocos = pop.blocos.map(b => {
+        const textoBlocos = (pop.blocos || []).map(b => {
           if (b.tipo === 'tabela' && Array.isArray(b.linhas)) {
             return b.linhas.map(l => l.join(' ')).join(' ').replace(/<[^>]+>/g, ' ');
           }
@@ -1018,7 +1021,7 @@
     }
 
     function extrairMetadadosTitulo(titulo, cor) {
-      const m = titulo.match(/^[🔴🟡🟢\s]*\[\s*([^|\]]+?)\s*(?:\|\s*(\d{2}\/\d{2}(?:\/\d{2,4})?))?\s*\]\s*(.*)$/i);
+      const m = String(titulo || '').match(/^[🔴🟡🟢\s]*\[\s*([^|\]]+?)\s*(?:\|\s*(\d{2}\/\d{2}(?:\/\d{2,4})?))?\s*\]\s*(.*)$/i);
       const padraoNivel = { vermelho: 'URGENTE', amarelo: 'ATENÇÃO', verde: 'INFORMATIVO', outro: '' };
       if (m) {
         return {
@@ -1030,7 +1033,7 @@
       return {
         nivelLabel: padraoNivel[cor] || '',
         dataStr: null,
-        tituloLimpo: titulo.replace(/^[🔴🟡🟢\s]+/, '').trim()
+        tituloLimpo: String(titulo || '').replace(/^[🔴🟡🟢\s]+/, '').trim()
       };
     }
 
@@ -1070,11 +1073,11 @@
     }
 
     function normalizar(str) {
-      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      return String(str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     }
 
     function escaparHtml(str) {
-      return str
+      return String(str || '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
@@ -1084,7 +1087,7 @@
       const termo = normalizar(termoOriginal.trim());
       if (!termo || termo.length < 2) return html;
 
-      const partes = html.split(/(<[^>]+>)/g);
+      const partes = String(html || '').split(/(<[^>]+>)/g);
       return partes.map(parte => {
         if (parte.startsWith('<')) return parte;
         const norm = normalizar(parte);
@@ -1220,11 +1223,22 @@
 
     function copiarLinkPop(id, btnEl) {
       const url = window.location.origin + window.location.pathname + '#' + id;
-      navigator.clipboard.writeText(url).then(() => {
+      const confirmar = () => {
         const original = btnEl.innerHTML;
         btnEl.innerHTML = '✅ Link copiado!';
         setTimeout(() => { btnEl.innerHTML = original; }, 2000);
-      });
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(confirmar);
+      } else {
+        const tmp = document.createElement('input');
+        tmp.value = url;
+        document.body.appendChild(tmp);
+        tmp.select();
+        document.execCommand('copy');
+        document.body.removeChild(tmp);
+        confirmar();
+      }
     }
 
     function compartilharWhatsApp(id) {
@@ -1391,7 +1405,7 @@
         divConteudo.className = 'conteudo-pop';
 
         let ulAtual = null;
-        pop.blocos.forEach(bloco => {
+        (pop.blocos || []).forEach(bloco => {
           if (bloco.tipo === 'lista') {
             if (!ulAtual) {
               ulAtual = document.createElement('ul');
