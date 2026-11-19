@@ -391,6 +391,8 @@
 
     /* Barra de Status + Controles em Vidro */
     .barra-status {
+      position: relative;
+      z-index: 22;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -413,24 +415,142 @@
       gap: 8px;
       margin-left: auto;
     }
-    .select-ordem {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.52));
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+
+    /* Menu Suspenso de Ordenação em Liquid Glass */
+    .ordem-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .ordem-trigger {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.54));
+      backdrop-filter: blur(16px) saturate(175%);
+      -webkit-backdrop-filter: blur(16px) saturate(175%);
       color: #1e293b;
-      border: 1px solid rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.9);
       border-radius: 999px;
-      padding: 6px 14px;
+      padding: 6px 12px 6px 14px;
       font-size: 12px;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
       outline: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       box-shadow: var(--glass-shadow-sm);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.22s var(--apple-ease), background 0.2s, border-color 0.2s, box-shadow 0.25s var(--apple-ease);
     }
-    .select-ordem:focus {
-      border-color: var(--verde);
+    .ordem-trigger:hover {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.72));
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.09), inset 0 1px 1px #ffffff;
     }
+    .ordem-trigger:active {
+      transform: scale(0.97);
+    }
+    .ordem-dropdown.aberto .ordem-trigger {
+      background: rgba(255, 255, 255, 0.94);
+      border-color: rgba(15, 118, 110, 0.45);
+      box-shadow: 0 8px 22px rgba(15, 118, 110, 0.14), 0 0 0 2px rgba(15, 118, 110, 0.14), inset 0 1px 1px #ffffff;
+    }
+    .ordem-seta {
+      color: #475569;
+      flex-shrink: 0;
+      transition: transform 0.34s var(--apple-ease), color 0.2s;
+    }
+    .ordem-dropdown.aberto .ordem-seta {
+      transform: rotate(180deg);
+      color: var(--verde);
+    }
+    .ordem-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 224px;
+      padding: 6px;
+      border-radius: 18px;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.76) 100%);
+      backdrop-filter: blur(26px) saturate(200%);
+      -webkit-backdrop-filter: blur(26px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.94);
+      box-shadow:
+        0 18px 42px rgba(15, 23, 42, 0.14),
+        0 4px 12px rgba(15, 23, 42, 0.06),
+        inset 0 1.5px 1px #ffffff;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-8px) scale(0.95);
+      transform-origin: top right;
+      will-change: transform, opacity;
+      transition: opacity 0.24s var(--apple-ease), transform 0.34s var(--apple-ease), visibility 0.24s;
+    }
+    .ordem-dropdown.aberto .ordem-menu {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+    .ordem-opcao {
+      width: 100%;
+      border: none;
+      background: transparent;
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #1e293b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: left;
+      white-space: nowrap;
+      transition: background 0.18s var(--apple-ease), color 0.18s, transform 0.18s var(--apple-ease);
+    }
+    .ordem-opcao + .ordem-opcao {
+      margin-top: 3px;
+    }
+    .ordem-opcao:not(.ativa):hover {
+      background: rgba(15, 118, 110, 0.10);
+      color: var(--verde);
+    }
+    .ordem-opcao:active {
+      transform: scale(0.98);
+    }
+    .ordem-opcao.ativa {
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.94), rgba(13, 148, 136, 0.86));
+      color: #ffffff;
+      box-shadow: 0 5px 14px rgba(15, 118, 110, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.38);
+    }
+    .ordem-check {
+      font-size: 12px;
+      font-weight: 800;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 0.2s var(--apple-ease), transform 0.25s var(--apple-ease);
+    }
+    .ordem-opcao.ativa .ordem-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .ordem-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      margin-left: 5px;
+      font-size: 10.5px;
+      opacity: 0.92;
+      vertical-align: middle;
+    }
+    .ordem-opcao.ativa .dot {
+      box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+    }
+
     .grupo-fonte {
       display: inline-flex;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.52));
@@ -923,6 +1043,11 @@
         width: 100%;
         justify-content: flex-end;
       }
+      .ordem-menu {
+        left: 0;
+        right: auto;
+        transform-origin: top left;
+      }
     }
 
     /* Modo de Impressão / PDF (Desliga o vidro para saída limpa) */
@@ -1040,10 +1165,22 @@
     <div class="barra-status">
       <div id="status"><span class="spinner"></span> Sincronizando normativas com o documento oficial...</div>
       <div id="controles-lista" class="controles-lista">
-        <select id="select-ordem" class="select-ordem" onchange="alterarOrdenacao(this.value)" title="Ordenar normativas">
-          <option value="recentes">Mais recentes</option>
-          <option value="urgencia">Por urgência (🔴 → 🟡 → 🟢)</option>
-        </select>
+        <div class="ordem-dropdown" id="ordem-dropdown">
+          <button type="button" class="ordem-trigger" id="ordem-trigger" onclick="alternarMenuOrdem(event)" aria-haspopup="listbox" aria-expanded="false" title="Ordenar normativas">
+            <span id="ordem-label">Mais recentes</span>
+            <svg class="ordem-seta" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="ordem-menu" id="ordem-menu" role="listbox">
+            <button type="button" class="ordem-opcao ativa" data-valor="recentes" role="option" aria-selected="true" onclick="selecionarOrdem('recentes')">
+              <span>Mais recentes</span>
+              <span class="ordem-check">✓</span>
+            </button>
+            <button type="button" class="ordem-opcao" data-valor="urgencia" role="option" aria-selected="false" onclick="selecionarOrdem('urgencia')">
+              <span>Por urgência <span class="ordem-dots"><span class="dot dot-vermelho"></span>→<span class="dot dot-amarelo"></span>→<span class="dot dot-verde"></span></span></span>
+              <span class="ordem-check">✓</span>
+            </button>
+          </div>
+        </div>
         <div class="grupo-fonte" title="Ajustar tamanho da letra nos POPs">
           <button type="button" class="btn-fonte" onclick="ajustarFonte(-1)" aria-label="Diminuir fonte">A-</button>
           <button type="button" class="btn-fonte" onclick="ajustarFonte(1)" aria-label="Aumentar fonte">A+</button>
@@ -1132,6 +1269,17 @@
     window.addEventListener('hashchange', verificarLinkDireto);
     window.addEventListener('resize', () => atualizarEstadoBotoesPasta(false));
 
+    document.addEventListener('click', (e) => {
+      const dropdown = document.getElementById('ordem-dropdown');
+      if (dropdown && !dropdown.contains(e.target)) {
+        fecharMenuOrdem();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') fecharMenuOrdem();
+    });
+
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => atualizarEstadoBotoesPasta(false));
     }
@@ -1176,6 +1324,46 @@
             '<div class="erro">Não foi possível carregar os POPs automaticamente. Verifique a conexão com o Apps Script.</div>';
         }
       });
+
+    /* Menu Suspenso de Ordenação em Liquid Glass */
+    function alternarMenuOrdem(e) {
+      if (e) e.stopPropagation();
+      const dropdown = document.getElementById('ordem-dropdown');
+      const trigger = document.getElementById('ordem-trigger');
+      if (!dropdown || !trigger) return;
+      const aberto = dropdown.classList.toggle('aberto');
+      trigger.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+    }
+
+    function fecharMenuOrdem() {
+      const dropdown = document.getElementById('ordem-dropdown');
+      const trigger = document.getElementById('ordem-trigger');
+      if (!dropdown || !trigger) return;
+      dropdown.classList.remove('aberto');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function atualizarVisualOrdem() {
+      const label = document.getElementById('ordem-label');
+      if (label) {
+        label.innerHTML = ordenacaoAtiva === 'urgencia'
+          ? 'Por urgência <span class="ordem-dots"><span class="dot dot-vermelho"></span>→<span class="dot dot-verde"></span></span>'
+          : 'Mais recentes';
+      }
+      document.querySelectorAll('.ordem-opcao').forEach(btn => {
+        const ativo = btn.dataset.valor === ordenacaoAtiva;
+        btn.classList.toggle('ativa', ativo);
+        btn.setAttribute('aria-selected', ativo ? 'true' : 'false');
+      });
+    }
+
+    function selecionarOrdem(valor) {
+      fecharMenuOrdem();
+      if (ordenacaoAtiva === valor) return;
+      ordenacaoAtiva = valor;
+      atualizarVisualOrdem();
+      aplicarFiltros(null, true);
+    }
 
     /* Controlador de Animação Fluida Estilo Apple para os Cards */
     function definirEstadoCard(details, abrir, animar = true) {
@@ -1448,11 +1636,6 @@
       try { localStorage.setItem(FONT_KEY, String(tamanhoFonteAtual)); } catch (e) {}
     }
 
-    function alterarOrdenacao(valor) {
-      ordenacaoAtiva = valor;
-      aplicarFiltros(null, true);
-    }
-
     function atualizarUrlPasta() {
       const url = new URL(window.location.href);
       if (pastaAtiva === 'TODOS') {
@@ -1614,7 +1797,8 @@
       pastaAtiva = 'TODOS';
       corAtiva = 'TODAS';
       ordenacaoAtiva = 'recentes';
-      document.getElementById('select-ordem').value = 'recentes';
+      atualizarVisualOrdem();
+      fecharMenuOrdem();
       todosExpandidos = false;
       ['vermelho', 'amarelo', 'verde'].forEach(c => {
         const el = document.getElementById('leg-' + c);
