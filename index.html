@@ -4,10 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>O que você precisa saber – Planejamento em Saúde JF</title>
+
+  <!-- Favicon e Prévia Institucional (WhatsApp / Redes) -->
+  <link rel="icon" type="image/jpeg" href="dpis.jpg">
+  <meta name="description" content="Painel oficial de normativas, portarias, notas técnicas e POPs de planejamento do SUS – DPIS / Secretaria de Saúde de Juiz de Fora.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="O que você precisa saber – Planejamento em Saúde JF">
+  <meta property="og:description" content="Notícias, normativas, portarias e atualizações estratégicas do SUS organizadas por subsecretaria – DPIS / PJF.">
+  <meta property="og:image" content="https://dpagsspjf.github.io/pop-saude-jf/dpis.jpg">
+  <meta property="og:url" content="https://dpagsspjf.github.io/pop-saude-jf/">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
+    :root {
+      --pop-font-size: 14px;
+    }
     * {
       box-sizing: border-box;
     }
@@ -16,7 +30,7 @@
       background-color: #f1f5f9;
       color: #1e293b;
       margin: 0;
-      padding: 24px 16px 40px;
+      padding: 24px 16px 44px;
       -webkit-font-smoothing: antialiased;
     }
     .container {
@@ -28,6 +42,8 @@
       box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
       border: 1px solid #e2e8f0;
     }
+
+    /* Cabeçalho */
     .header {
       text-align: center;
       border-bottom: 1px solid #e2e8f0;
@@ -41,6 +57,8 @@
       gap: 18px;
       margin-bottom: 12px;
     }
+    .header-logos img.logo-pjf { height: 60px; }
+    .header-logos img.logo-dpis { height: 68px; }
     .header h1 {
       color: #0f766e;
       font-size: 26px;
@@ -63,11 +81,13 @@
       border: 1px solid #99f6e4;
       padding: 4px 14px;
       border-radius: 999px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
+
+    /* Legenda Clicável (Chips de Criticidade) */
     .legenda {
       font-size: 12px;
-      color: #475569;
+      color: #334155;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
@@ -75,22 +95,27 @@
     }
     .legenda-item {
       cursor: pointer;
-      padding: 5px 12px;
+      padding: 6px 13px;
       border-radius: 999px;
-      border: 1px solid transparent;
+      border: 1px solid #cbd5e1;
       background: #f8fafc;
       transition: all 0.15s;
       user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }
     .legenda-item:hover {
       background: #f1f5f9;
-      border-color: #cbd5e1;
+      border-color: #0f766e;
+      transform: translateY(-1px);
     }
     .legenda-item.cor-ativa {
-      background: #f0fdfa;
+      background: #0f766e;
       border-color: #0f766e;
-      color: #0f172a;
-      box-shadow: 0 1px 4px rgba(15, 118, 110, 0.12);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(15, 118, 110, 0.22);
     }
 
     /* Barra de Pesquisa */
@@ -136,7 +161,7 @@
 
     /* Grade de Pastas em 2 Linhas Uniformes */
     .pastas-wrapper {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       padding-bottom: 16px;
       border-bottom: 1px solid #e2e8f0;
     }
@@ -166,22 +191,6 @@
     }
     .pasta-btn.btn-todas {
       grid-column: span 2;
-    }
-    @media (max-width: 980px) {
-      .pastas-bar {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      .pasta-btn.btn-todas {
-        grid-column: span 3;
-      }
-    }
-    @media (max-width: 600px) {
-      .pastas-bar {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .pasta-btn.btn-todas {
-        grid-column: span 2;
-      }
     }
     .pasta-btn:hover {
       background: #f1f5f9;
@@ -224,7 +233,40 @@
     .dot-amarelo  { background-color: #eab308; }
     .dot-verde    { background-color: #16a34a; }
 
-    /* Barra de Status + Botão Expandir/Recolher */
+    /* Banner Discreto de Alerta Urgente */
+    .banner-urgente {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #dc2626;
+      color: #991b1b;
+      padding: 9px 14px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .banner-urgente button {
+      background: #dc2626;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 11px;
+      font-size: 11.5px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+    .banner-urgente button:hover {
+      background: #b91c1c;
+    }
+
+    /* Barra de Status + Controles (Ordenação, A-/A+, Expandir) */
     .barra-status {
       display: flex;
       flex-wrap: wrap;
@@ -240,6 +282,52 @@
       align-items: center;
       gap: 8px;
     }
+    .controles-lista {
+      display: none;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .select-ordem {
+      background: #ffffff;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+    }
+    .select-ordem:focus {
+      border-color: #0f766e;
+    }
+    .grupo-fonte {
+      display: inline-flex;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .btn-fonte {
+      background: #ffffff;
+      color: #334155;
+      border: none;
+      padding: 5px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-fonte:first-child {
+      border-right: 1px solid #e2e8f0;
+    }
+    .btn-fonte:hover {
+      background: #f0fdfa;
+      color: #0f766e;
+    }
     .btn-expandir-todos {
       background: #ffffff;
       color: #0f766e;
@@ -251,7 +339,6 @@
       font-family: inherit;
       cursor: pointer;
       transition: all 0.15s;
-      display: none;
     }
     .btn-expandir-todos:hover {
       background: #f0fdfa;
@@ -272,7 +359,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Cards dos POPs com Semáforo Lateral */
+    /* Cards dos POPs com Semáforo Lateral e Scroll Margin */
     details {
       border: 1px solid #e2e8f0;
       border-left: 5px solid #cbd5e1;
@@ -280,7 +367,8 @@
       margin-bottom: 12px;
       padding: 14px 18px;
       background: #ffffff;
-      transition: all 0.15s;
+      transition: box-shadow 0.15s, border-color 0.15s;
+      scroll-margin-top: 84px;
     }
     details.card-vermelho { border-left-color: #dc2626; }
     details.card-amarelo  { border-left-color: #eab308; }
@@ -298,43 +386,128 @@
       box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
     }
     details.destaque-link {
-      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.3);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.35);
     }
 
+    /* Título Refinado (Sem Triângulo Preto Nativo + Seta à Direita) */
     summary {
+      list-style: none;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    .summary-conteudo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+    .summary-badges {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge-nivel {
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      padding: 2px 8px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .badge-vermelho { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .badge-amarelo  { background: #fefce8; color: #a16207; border: 1px solid #fde047; }
+    .badge-verde    { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-outro    { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+
+    .badge-data {
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 2px 8px;
+      border-radius: 5px;
+    }
+    .badge-novo {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      color: #ffffff;
+      background: #0f766e;
+      padding: 2px 7px;
+      border-radius: 5px;
+      text-transform: uppercase;
+    }
+    .summary-titulo {
       font-weight: 700;
       font-size: 15px;
-      cursor: pointer;
       color: #0f172a;
-      line-height: 1.45;
-      outline: none;
+      line-height: 1.4;
     }
+    .chevron-card {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: transform 0.2s, background 0.15s, color 0.15s;
+    }
+    summary:hover .chevron-card {
+      background: #f0fdfa;
+      border-color: #99f6e4;
+      color: #0f766e;
+    }
+    details[open] .chevron-card {
+      transform: rotate(180deg);
+      background: #f0fdfa;
+      border-color: #99f6e4;
+      color: #0f766e;
+    }
+
+    /* Tags de Setores + Ações Executivas */
     .topo-card-meta {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-top: 8px;
+      margin-top: 10px;
     }
     .tags-pop {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 5px;
     }
     .tag-setor {
       background: #f0fdfa;
       color: #0f766e;
       border: 1px solid #99f6e4;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 5px;
     }
-
-    /* Botões Executivos dentro do POP */
     .acoes-pop {
       display: none;
+      flex-wrap: wrap;
       gap: 6px;
     }
     details[open] .acoes-pop {
@@ -342,10 +515,10 @@
     }
     .btn-acao-pop {
       background: #f8fafc;
-      color: #475569;
+      color: #334155;
       border: 1px solid #cbd5e1;
       border-radius: 6px;
-      padding: 3px 9px;
+      padding: 4px 10px;
       font-size: 11px;
       font-weight: 600;
       font-family: inherit;
@@ -357,14 +530,19 @@
       color: #0f766e;
       border-color: #0f766e;
     }
+    .btn-acao-wpp:hover {
+      background: #f0fdf4;
+      color: #15803d;
+      border-color: #16a34a;
+    }
 
     /* Conteúdo Interno do POP */
     .conteudo-pop {
       margin-top: 12px;
-      padding-top: 12px;
+      padding-top: 14px;
       border-top: 1px solid #f1f5f9;
-      font-size: 14px;
-      line-height: 1.65;
+      font-size: var(--pop-font-size);
+      line-height: 1.68;
       color: #334155;
     }
     .conteudo-pop p {
@@ -376,13 +554,13 @@
       border-left: 3px solid #0f766e;
       padding: 8px 12px;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: calc(var(--pop-font-size) - 1px);
       margin-bottom: 8px !important;
       color: #1e293b;
     }
     .conteudo-pop h3 {
       color: #0f766e;
-      font-size: 15px;
+      font-size: calc(var(--pop-font-size) + 1px);
       font-weight: 700;
       margin: 18px 0 6px;
     }
@@ -393,6 +571,46 @@
     .conteudo-pop li {
       margin-bottom: 6px;
     }
+
+    /* Tabelas Responsivas dentro dos POPs */
+    .tabela-wrap {
+      width: 100%;
+      overflow-x: auto;
+      margin: 12px 0 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+    }
+    .tabela-pop {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: calc(var(--pop-font-size) - 1px);
+      text-align: left;
+    }
+    .tabela-pop th {
+      background: #f0fdfa;
+      color: #0f766e;
+      font-weight: 700;
+      padding: 9px 12px;
+      border-bottom: 2px solid #99f6e4;
+      border-right: 1px solid #e2e8f0;
+    }
+    .tabela-pop td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #e2e8f0;
+      border-right: 1px solid #f1f5f9;
+      vertical-align: top;
+    }
+    .tabela-pop th:last-child,
+    .tabela-pop td:last-child {
+      border-right: none;
+    }
+    .tabela-pop tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    .tabela-pop tbody tr:last-child td {
+      border-bottom: none;
+    }
+
     a { color: #0284c7; text-decoration: none; font-weight: 500; }
     a:hover { text-decoration: underline; }
 
@@ -450,10 +668,76 @@
       transform: translateY(-2px);
     }
 
+    /* Responsividade (Tablets e Celulares) */
+    @media (max-width: 980px) {
+      .pastas-bar {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .pasta-btn.btn-todas {
+        grid-column: span 3;
+      }
+    }
+    @media (max-width: 640px) {
+      body {
+        padding: 10px 8px 36px;
+      }
+      .container {
+        padding: 20px 14px 20px;
+        border-radius: 10px;
+      }
+      .header-logos img.logo-pjf { height: 46px; }
+      .header-logos img.logo-dpis { height: 52px; }
+      .header h1 {
+        font-size: 20px;
+      }
+      .header p {
+        font-size: 12.5px;
+      }
+      .legenda-item {
+        font-size: 11px;
+        padding: 5px 10px;
+      }
+      .pastas-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
+      .pasta-btn.btn-todas {
+        grid-column: span 2;
+      }
+      .pasta-btn {
+        font-size: 11px;
+        padding: 6px 6px;
+        gap: 4px;
+      }
+      .contadores-cor {
+        font-size: 10px;
+        gap: 4px;
+        padding: 1px 5px;
+      }
+      .banner-urgente {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .summary-titulo {
+        font-size: 14px;
+      }
+      details {
+        padding: 12px 13px;
+      }
+      .controles-lista {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
     /* Modo de Impressão / PDF */
     @media print {
       @page {
         margin: 14mm;
+      }
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
       body {
         background: #ffffff;
@@ -471,9 +755,12 @@
       }
       .search-bar,
       .pastas-wrapper,
+      .banner-urgente,
       .barra-status,
       .legenda,
       .acoes-pop,
+      .chevron-card,
+      .badge-novo,
       #btn-topo {
         display: none !important;
       }
@@ -488,13 +775,16 @@
         break-inside: auto !important;
         page-break-inside: auto !important;
       }
-      summary, h3, .callout-meta, li {
+      summary, h3, .callout-meta, li, tr {
         break-inside: avoid;
         page-break-inside: avoid;
       }
       h3 {
         break-after: avoid;
         page-break-after: avoid;
+      }
+      .tabela-wrap {
+        overflow: visible;
       }
     }
   </style>
@@ -503,8 +793,8 @@
   <div class="container">
     <div class="header">
       <div class="header-logos">
-        <img src="pjf.jpg" alt="Prefeitura de Juiz de Fora - Secretaria de Saúde" style="height: 60px;">
-        <img src="dpis.jpg" alt="DPIS - Departamento de Planejamento e Informações em Saúde" style="height: 68px;">
+        <img src="pjf.jpg" class="logo-pjf" alt="Prefeitura de Juiz de Fora - Secretaria de Saúde">
+        <img src="dpis.jpg" class="logo-dpis" alt="DPIS - Departamento de Planejamento e Informações em Saúde">
       </div>
       <h1>O que você precisa saber<br>Planejamento em Saúde JF</h1>
       <p>Notícias, informações importantes e atualizações de normativas e planejamento do SUS</p>
@@ -517,7 +807,7 @@
     </div>
 
     <div class="search-bar">
-      <input type="text" id="busca" placeholder="Pesquisar dentro dos POPs (ex: DaVita, FIT, RNDS, DigiSUS, Saldos)..." oninput="aplicarFiltros()">
+      <input type="text" id="busca" placeholder="Pesquisar dentro dos POPs (ex: DaVita, FIT, RNDS, DigiSUS, Saldos)..." oninput="agendarBusca()">
       <button onclick="limparTudo()">Limpar</button>
     </div>
 
@@ -525,9 +815,24 @@
       <div class="pastas-bar" id="pastas-bar"></div>
     </div>
 
+    <div id="banner-urgente" class="banner-urgente">
+      <span id="banner-urgente-texto"></span>
+      <button type="button" onclick="alternarCor('vermelho')">Ver urgente</button>
+    </div>
+
     <div class="barra-status">
       <div id="status"><span class="spinner"></span> Sincronizando normativas com o documento oficial...</div>
-      <button type="button" id="btn-expandir-todos" class="btn-expandir-todos" onclick="alternarExpandirTodos()">Expandir todos</button>
+      <div id="controles-lista" class="controles-lista">
+        <select id="select-ordem" class="select-ordem" onchange="alterarOrdenacao(this.value)" title="Ordenar normativas">
+          <option value="recentes">Mais recentes</option>
+          <option value="urgencia">Por urgência (🔴 → 🟡 → 🟢)</option>
+        </select>
+        <div class="grupo-fonte" title="Ajustar tamanho da letra nos POPs">
+          <button type="button" class="btn-fonte" onclick="ajustarFonte(-1)" aria-label="Diminuir fonte">A-</button>
+          <button type="button" class="btn-fonte" onclick="ajustarFonte(1)" aria-label="Aumentar fonte">A+</button>
+        </div>
+        <button type="button" id="btn-expandir-todos" class="btn-expandir-todos" onclick="alternarExpandirTodos()">Expandir todos</button>
+      </div>
     </div>
 
     <div id="lista"></div>
@@ -541,6 +846,8 @@
 
   <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwIvQR1jsgLpoJDK19AFlf7013B3N9DetJtyIf79e_Dag_CIcLAXOkiBmI3LDoK0ZXv6Q/exec';
+    const CACHE_KEY = 'pop_saude_jf_cache_v2';
+    const FONT_KEY = 'pop_saude_jf_font_size';
 
     const PASTAS = [
       'TODOS',
@@ -570,70 +877,197 @@
       'SSGIS': 'Subsecretaria de Gestão Institucional e Sistemas'
     };
 
+    const PESO_COR = { vermelho: 0, amarelo: 1, verde: 2, outro: 3 };
+
     let todosPops = [];
     let pastaAtiva = 'TODOS';
     let corAtiva = 'TODAS';
+    let ordenacaoAtiva = 'recentes';
     let todosExpandidos = false;
+    let timerBusca = null;
+    let cacheCarregado = false;
+    let tamanhoFonteAtual = 14;
+
+    // Restaura tamanho de fonte salvo
+    (function iniciarPreferencias() {
+      try {
+        const salvo = parseInt(localStorage.getItem(FONT_KEY), 10);
+        if (salvo >= 12 && salvo <= 20) {
+          tamanhoFonteAtual = salvo;
+          document.documentElement.style.setProperty('--pop-font-size', tamanhoFonteAtual + 'px');
+        }
+      } catch (e) {}
+
+      // Lê parâmetro ?pasta=SSAS_AP da URL
+      const params = new URLSearchParams(window.location.search);
+      const pastaUrl = (params.get('pasta') || '').toUpperCase().trim();
+      if (pastaUrl && PASTAS.includes(pastaUrl)) {
+        pastaAtiva = pastaUrl;
+      }
+    })();
 
     window.addEventListener('scroll', () => {
       const btn = document.getElementById('btn-topo');
       btn.style.display = window.scrollY > 320 ? 'flex' : 'none';
     });
 
+    window.addEventListener('hashchange', verificarLinkDireto);
+
+    // 1) Carregamento instantâneo via cache local (se já visitou antes)
+    try {
+      const cacheTexto = localStorage.getItem(CACHE_KEY);
+      if (cacheTexto) {
+        const dadosCache = JSON.parse(cacheTexto);
+        processarDados(dadosCache, false);
+        cacheCarregado = true;
+      }
+    } catch (e) {}
+
+    // 2) Sincronização em segundo plano com o Apps Script
     fetch(API_URL)
       .then(response => {
         if (!response.ok) throw new Error('Falha na resposta do servidor');
         return response.json();
       })
       .then(dados => {
-        const listaPops = Array.isArray(dados) ? dados : (dados.pops || []);
-
-        if (!Array.isArray(dados) && dados.ultimaAtualizacao) {
-          const elAtualizacao = document.getElementById('ultima-atualizacao');
-          elAtualizacao.textContent = '🕒 ' + dados.ultimaAtualizacao;
-          elAtualizacao.style.display = 'inline-block';
-        }
-
-        todosPops = listaPops.map((pop, idx) => {
-          const textoBruto = (
-            pop.titulo + ' ' + pop.blocos.map(b => b.html.replace(/<[^>]+>/g, ' ')).join(' ')
-          ).toUpperCase();
-
-          const setores = PASTAS.filter(sigla => {
-            if (sigla === 'TODOS') return false;
-            if (sigla === 'SSAS') {
-              return /\bSSAS(_[A-Z]+)?\b/.test(textoBruto);
-            }
-            const regex = new RegExp('\\b' + sigla + '\\b');
-            return regex.test(textoBruto);
-          });
-
-          let cor = 'outro';
-          if (/🔴|\[URGENTE/i.test(pop.titulo)) {
-            cor = 'vermelho';
-          } else if (/🟡|\[ATEN[CÇ][AÃ]O/i.test(pop.titulo)) {
-            cor = 'amarelo';
-          } else if (/🟢|\[INFORMATIVO/i.test(pop.titulo)) {
-            cor = 'verde';
+        const novoTexto = JSON.stringify(dados);
+        let mudou = true;
+        try {
+          if (localStorage.getItem(CACHE_KEY) === novoTexto) {
+            mudou = false;
+          } else {
+            localStorage.setItem(CACHE_KEY, novoTexto);
           }
+        } catch (e) {}
 
-          return {
-            ...pop,
-            id: 'pop-' + (idx + 1),
-            cor: cor,
-            setores: setores,
-            textoNormalizado: normalizar(textoBruto)
-          };
+        if (!cacheCarregado || mudou) {
+          processarDados(dados, cacheCarregado);
+        }
+      })
+      .catch(() => {
+        if (!cacheCarregado) {
+          document.getElementById('status').innerHTML =
+            '<div class="erro">Não foi possível carregar os POPs automaticamente. Verifique a conexão com o Apps Script.</div>';
+        }
+      });
+
+    function processarDados(dados, preservarAbertos) {
+      const abertosAntes = new Set();
+      if (preservarAbertos) {
+        document.querySelectorAll('#lista details[open]').forEach(el => abertosAntes.add(el.id));
+      }
+
+      const listaPops = Array.isArray(dados) ? dados : (dados.pops || []);
+
+      if (!Array.isArray(dados) && dados.ultimaAtualizacao) {
+        const elAtualizacao = document.getElementById('ultima-atualizacao');
+        elAtualizacao.textContent = '🕒 ' + dados.ultimaAtualizacao;
+        elAtualizacao.style.display = 'inline-block';
+      }
+
+      const idsUsados = {};
+
+      todosPops = listaPops.map((pop, idx) => {
+        const textoBlocos = pop.blocos.map(b => {
+          if (b.tipo === 'tabela' && Array.isArray(b.linhas)) {
+            return b.linhas.map(l => l.join(' ')).join(' ').replace(/<[^>]+>/g, ' ');
+          }
+          return (b.html || '').replace(/<[^>]+>/g, ' ');
+        }).join(' ');
+
+        const textoBruto = (pop.titulo + ' ' + textoBlocos).toUpperCase();
+
+        const setores = PASTAS.filter(sigla => {
+          if (sigla === 'TODOS') return false;
+          if (sigla === 'SSAS') {
+            return /\bSSAS(_[A-Z]+)?\b/.test(textoBruto);
+          }
+          const regex = new RegExp('\\b' + sigla + '\\b');
+          return regex.test(textoBruto);
         });
 
-        montarBotoesPastas();
-        aplicarFiltros();
-        verificarLinkDireto();
-      })
-      .catch(erro => {
-        document.getElementById('status').innerHTML =
-          '<div class="erro">Não foi possível carregar os POPs automaticamente. Verifique a conexão com o Apps Script.</div>';
+        let cor = 'outro';
+        if (/🔴|\[URGENTE/i.test(pop.titulo)) {
+          cor = 'vermelho';
+        } else if (/🟡|\[ATEN[CÇ][AÃ]O/i.test(pop.titulo)) {
+          cor = 'amarelo';
+        } else if (/🟢|\[INFORMATIVO/i.test(pop.titulo)) {
+          cor = 'verde';
+        }
+
+        const meta = extrairMetadadosTitulo(pop.titulo, cor);
+        const idPermanente = gerarIdPermanente(meta.dataStr, meta.tituloLimpo, idsUsados);
+
+        return {
+          ...pop,
+          ordemOriginal: idx,
+          id: idPermanente,
+          cor: cor,
+          nivelLabel: meta.nivelLabel,
+          dataStr: meta.dataStr,
+          tituloLimpo: meta.tituloLimpo,
+          ehNovo: verificarSeNovo(meta.dataStr),
+          setores: setores,
+          textoNormalizado: normalizar(textoBruto)
+        };
       });
+
+      montarBotoesPastas();
+      aplicarFiltros(abertosAntes);
+      verificarLinkDireto();
+    }
+
+    function extrairMetadadosTitulo(titulo, cor) {
+      const m = titulo.match(/^[🔴🟡🟢\s]*\[\s*([^|\]]+?)\s*(?:\|\s*(\d{2}\/\d{2}(?:\/\d{2,4})?))?\s*\]\s*(.*)$/i);
+      const padraoNivel = { vermelho: 'URGENTE', amarelo: 'ATENÇÃO', verde: 'INFORMATIVO', outro: '' };
+      if (m) {
+        return {
+          nivelLabel: m[1].trim().toUpperCase(),
+          dataStr: m[2] ? m[2].trim() : null,
+          tituloLimpo: m[3].trim() || titulo
+        };
+      }
+      return {
+        nivelLabel: padraoNivel[cor] || '',
+        dataStr: null,
+        tituloLimpo: titulo.replace(/^[🔴🟡🟢\s]+/, '').trim()
+      };
+    }
+
+    function gerarIdPermanente(dataStr, tituloLimpo, idsUsados) {
+      const base = normalizar((dataStr ? dataStr + '-' : '') + tituloLimpo)
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 64)
+        .replace(/-+$/, '') || 'pop';
+
+      if (!idsUsados[base]) {
+        idsUsados[base] = 1;
+        return base;
+      }
+      idsUsados[base]++;
+      return base + '-' + idsUsados[base];
+    }
+
+    function verificarSeNovo(dataStr) {
+      if (!dataStr) return false;
+      const partes = dataStr.split('/');
+      if (partes.length < 2) return false;
+      const dia = parseInt(partes[0], 10);
+      const mes = parseInt(partes[1], 10) - 1;
+      const hoje = new Date();
+      let ano = partes[2] ? parseInt(partes[2], 10) : hoje.getFullYear();
+      if (ano < 100) ano += 2000;
+
+      const dataPop = new Date(ano, mes, dia);
+      // Ajusta virada de ano (ex: POP de dezembro visto em janeiro)
+      if (!partes[2] && (dataPop - hoje) > 30 * 86400000) {
+        dataPop.setFullYear(ano - 1);
+      }
+
+      const diffDias = (hoje - dataPop) / 86400000;
+      return diffDias >= -1 && diffDias <= 7;
+    }
 
     function normalizar(str) {
       return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
@@ -668,6 +1102,33 @@
         resultado += parte.substring(pos);
         return resultado;
       }).join('');
+    }
+
+    function agendarBusca() {
+      clearTimeout(timerBusca);
+      timerBusca = setTimeout(() => aplicarFiltros(), 150);
+    }
+
+    function ajustarFonte(delta) {
+      tamanhoFonteAtual = Math.min(20, Math.max(12, tamanhoFonteAtual + delta));
+      document.documentElement.style.setProperty('--pop-font-size', tamanhoFonteAtual + 'px');
+      try { localStorage.setItem(FONT_KEY, String(tamanhoFonteAtual)); } catch (e) {}
+    }
+
+    function alterarOrdenacao(valor) {
+      ordenacaoAtiva = valor;
+      aplicarFiltros();
+    }
+
+    function atualizarUrlPasta() {
+      const url = new URL(window.location.href);
+      if (pastaAtiva === 'TODOS') {
+        url.searchParams.delete('pasta');
+      } else {
+        url.searchParams.set('pasta', pastaAtiva);
+      }
+      url.hash = '';
+      history.replaceState(null, '', url.pathname + url.search);
     }
 
     function alternarCor(cor) {
@@ -705,6 +1166,7 @@
         `;
         btn.onclick = () => {
           pastaAtiva = sigla;
+          atualizarUrlPasta();
           montarBotoesPastas();
           aplicarFiltros();
         };
@@ -712,18 +1174,38 @@
       });
     }
 
+    function atualizarBannerUrgente() {
+      const banner = document.getElementById('banner-urgente');
+      const texto = document.getElementById('banner-urgente-texto');
+      const popsBase = pastaAtiva === 'TODOS'
+        ? todosPops
+        : todosPops.filter(p => p.setores.includes(pastaAtiva));
+
+      const urgentes = popsBase.filter(p => p.cor === 'vermelho').length;
+
+      if (urgentes > 0 && corAtiva !== 'vermelho') {
+        const local = pastaAtiva === 'TODOS' ? 'no painel' : 'na pasta ' + pastaAtiva;
+        texto.textContent = urgentes === 1
+          ? `⚠️ Há 1 normativa urgente com prazo iminente ${local}.`
+          : `⚠️ Há ${urgentes} normativas urgentes com prazos iminentes ${local}.`;
+        banner.style.display = 'flex';
+      } else {
+        banner.style.display = 'none';
+      }
+    }
+
     function limparTudo() {
       document.getElementById('busca').value = '';
       pastaAtiva = 'TODOS';
       corAtiva = 'TODAS';
+      ordenacaoAtiva = 'recentes';
+      document.getElementById('select-ordem').value = 'recentes';
       todosExpandidos = false;
       ['vermelho', 'amarelo', 'verde'].forEach(c => {
         const el = document.getElementById('leg-' + c);
         if (el) el.classList.remove('cor-ativa');
       });
-      if (window.location.hash) {
-        history.replaceState(null, null, ' ');
-      }
+      atualizarUrlPasta();
       montarBotoesPastas();
       aplicarFiltros();
     }
@@ -745,6 +1227,14 @@
       });
     }
 
+    function compartilharWhatsApp(id) {
+      const pop = todosPops.find(p => p.id === id);
+      if (!pop) return;
+      const url = window.location.origin + window.location.pathname + '#' + id;
+      const msg = `*Planejamento em Saúde JF (DPIS)*\n\n${pop.titulo}\n\nAcesse o POP completo:\n${url}`;
+      window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    }
+
     function imprimirPop(id) {
       const card = document.getElementById(id);
       if (!card) return;
@@ -759,35 +1249,62 @@
     }
 
     function verificarLinkDireto() {
-      const hash = window.location.hash.replace('#', '');
+      const hash = decodeURIComponent(window.location.hash.replace('#', ''));
       if (!hash) return;
-      const card = document.getElementById(hash);
+
+      let card = document.getElementById(hash);
+      // Se o POP existir mas estiver oculto por algum filtro, limpa filtros para abri-lo
+      if (!card && todosPops.some(p => p.id === hash)) {
+        pastaAtiva = 'TODOS';
+        corAtiva = 'TODAS';
+        document.getElementById('busca').value = '';
+        ['vermelho', 'amarelo', 'verde'].forEach(c => {
+          const el = document.getElementById('leg-' + c);
+          if (el) el.classList.remove('cor-ativa');
+        });
+        montarBotoesPastas();
+        aplicarFiltros();
+        card = document.getElementById(hash);
+      }
+
       if (card) {
         card.open = true;
         card.classList.add('destaque-link');
         setTimeout(() => {
           card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 150);
+        }, 120);
+        setTimeout(() => {
+          card.classList.remove('destaque-link');
+        }, 3000);
       }
     }
 
-    function aplicarFiltros() {
+    function aplicarFiltros(abertosAntes) {
       const termoOriginal = document.getElementById('busca').value.trim();
       const termo = normalizar(termoOriginal);
 
-      const filtrados = todosPops.filter(pop => {
+      let filtrados = todosPops.filter(pop => {
         const batePasta = pastaAtiva === 'TODOS' || pop.setores.includes(pastaAtiva);
         const bateCor = corAtiva === 'TODAS' || pop.cor === corAtiva;
         const bateTexto = !termo || pop.textoNormalizado.indexOf(termo) !== -1;
         return batePasta && bateCor && bateTexto;
       });
 
-      renderizar(filtrados, termoOriginal);
+      if (ordenacaoAtiva === 'urgencia') {
+        filtrados = [...filtrados].sort((a, b) => {
+          const diff = PESO_COR[a.cor] - PESO_COR[b.cor];
+          return diff !== 0 ? diff : a.ordemOriginal - b.ordemOriginal;
+        });
+      }
+
+      atualizarBannerUrgente();
+      renderizar(filtrados, termoOriginal, abertosAntes);
     }
 
-    function renderizar(lista, termoOriginal) {
+    function renderizar(lista, termoOriginal, abertosAntes) {
       const container = document.getElementById('lista');
       const status = document.getElementById('status');
+      const controles = document.getElementById('controles-lista');
       const btnExpandir = document.getElementById('btn-expandir-todos');
       container.innerHTML = '';
 
@@ -798,29 +1315,51 @@
       const nomesCor = { vermelho: 'Urgente (🔴)', amarelo: 'Atenção (🟡)', verde: 'Informativo (🟢)' };
       const labelCor = corAtiva === 'TODAS' ? '' : ' • filtro ' + nomesCor[corAtiva];
 
-      const v = lista.filter(p => p.cor === 'vermelho').length;
-      const a = lista.filter(p => p.cor === 'amarelo').length;
-      const g = lista.filter(p => p.cor === 'verde').length;
-
-     if (lista.length === 0) {
+      if (lista.length === 0) {
         status.textContent = 'Nenhum POP encontrado em ' + labelPasta + labelCor + '.';
-        btnExpandir.style.display = 'none';
+        controles.style.display = 'none';
         return;
       }
 
       status.textContent = '';
-      btnExpandir.style.display = 'inline-block';
+      controles.style.display = 'flex';
       btnExpandir.textContent = abrirAutomatico ? 'Recolher todos' : 'Expandir todos';
+
+      const dotClasse = { vermelho: 'dot-vermelho', amarelo: 'dot-amarelo', verde: 'dot-verde', outro: '' };
 
       lista.forEach(pop => {
         const details = document.createElement('details');
         details.id = pop.id;
         details.className = 'card-' + pop.cor;
-        if (abrirAutomatico) details.open = true;
+        if (abrirAutomatico || (abertosAntes && abertosAntes.has(pop.id))) {
+          details.open = true;
+        }
 
         const summary = document.createElement('summary');
-        const tituloSeguro = escaparHtml(pop.titulo);
-        summary.innerHTML = abrirAutomatico ? grifarHtml(tituloSeguro, termoOriginal) : tituloSeguro;
+        const tituloSeguro = escaparHtml(pop.tituloLimpo);
+        const tituloFinal = abrirAutomatico ? grifarHtml(tituloSeguro, termoOriginal) : tituloSeguro;
+
+        let badgesHtml = '';
+        if (pop.nivelLabel) {
+          const dotHtml = dotClasse[pop.cor] ? `<span class="dot ${dotClasse[pop.cor]}"></span>` : '';
+          badgesHtml += `<span class="badge-nivel badge-${pop.cor}">${dotHtml}${escaparHtml(pop.nivelLabel)}</span>`;
+        }
+        if (pop.dataStr) {
+          badgesHtml += `<span class="badge-data">📅 ${escaparHtml(pop.dataStr)}</span>`;
+        }
+        if (pop.ehNovo) {
+          badgesHtml += `<span class="badge-novo">NOVO</span>`;
+        }
+
+        summary.innerHTML = `
+          <div class="summary-conteudo">
+            ${badgesHtml ? `<div class="summary-badges">${badgesHtml}</div>` : ''}
+            <div class="summary-titulo">${tituloFinal}</div>
+          </div>
+          <span class="chevron-card" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
+        `;
         details.appendChild(summary);
 
         const metaRow = document.createElement('div');
@@ -841,7 +1380,8 @@
         const acoesDiv = document.createElement('div');
         acoesDiv.className = 'acoes-pop';
         acoesDiv.innerHTML = `
-          <button type="button" class="btn-acao-pop" onclick="copiarLinkPop('${pop.id}', this)" title="Copiar link direto para este POP">🔗 Copiar link</button>
+          <button type="button" class="btn-acao-pop btn-acao-wpp" onclick="compartilharWhatsApp('${pop.id}')" title="Enviar este POP no WhatsApp">📤 WhatsApp</button>
+          <button type="button" class="btn-acao-pop" onclick="copiarLinkPop('${pop.id}', this)" title="Copiar link permanente para este POP">🔗 Copiar link</button>
           <button type="button" class="btn-acao-pop" onclick="imprimirPop('${pop.id}')" title="Imprimir ou salvar em PDF apenas este POP">🖨️ Imprimir / PDF</button>
         `;
         metaRow.appendChild(acoesDiv);
@@ -852,20 +1392,53 @@
 
         let ulAtual = null;
         pop.blocos.forEach(bloco => {
-          const htmlProcessado = abrirAutomatico ? grifarHtml(bloco.html, termoOriginal) : bloco.html;
-
           if (bloco.tipo === 'lista') {
             if (!ulAtual) {
               ulAtual = document.createElement('ul');
               divConteudo.appendChild(ulAtual);
             }
             const li = document.createElement('li');
-            li.innerHTML = htmlProcessado;
+            li.innerHTML = abrirAutomatico ? grifarHtml(bloco.html, termoOriginal) : bloco.html;
             ulAtual.appendChild(li);
+          } else if (bloco.tipo === 'tabela' && Array.isArray(bloco.linhas) && bloco.linhas.length > 0) {
+            ulAtual = null;
+            const wrap = document.createElement('div');
+            wrap.className = 'tabela-wrap';
+            const table = document.createElement('table');
+            table.className = 'tabela-pop';
+
+            const temCabecalho = bloco.linhas.length > 1;
+            if (temCabecalho) {
+              const thead = document.createElement('thead');
+              const tr = document.createElement('tr');
+              bloco.linhas[0].forEach(cel => {
+                const th = document.createElement('th');
+                th.innerHTML = abrirAutomatico ? grifarHtml(cel, termoOriginal) : cel;
+                tr.appendChild(th);
+              });
+              thead.appendChild(tr);
+              table.appendChild(thead);
+            }
+
+            const tbody = document.createElement('tbody');
+            const inicioCorpo = temCabecalho ? 1 : 0;
+            for (let i = inicioCorpo; i < bloco.linhas.length; i++) {
+              const tr = document.createElement('tr');
+              bloco.linhas[i].forEach(cel => {
+                const td = document.createElement('td');
+                td.innerHTML = abrirAutomatico ? grifarHtml(cel, termoOriginal) : cel;
+                tr.appendChild(td);
+              });
+              tbody.appendChild(tr);
+            }
+            table.appendChild(tbody);
+            wrap.appendChild(table);
+            divConteudo.appendChild(wrap);
           } else {
             ulAtual = null;
+            const htmlProcessado = abrirAutomatico ? grifarHtml(bloco.html || '', termoOriginal) : (bloco.html || '');
             const el = document.createElement(bloco.tipo === 'subtitulo' ? 'h3' : 'p');
-            const textoLimpo = bloco.html.replace(/<[^>]+>/g, '').trim();
+            const textoLimpo = (bloco.html || '').replace(/<[^>]+>/g, '').trim();
             if (bloco.tipo !== 'subtitulo' && /^(Ato Normativo:|Área de Impacto:)/i.test(textoLimpo)) {
               el.className = 'callout-meta';
             }
