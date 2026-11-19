@@ -25,12 +25,10 @@
       --verde: #0f766e;
       --verde-claro: #14b8a6;
       --verde-escuro: #115e59;
-      --glass-bg: rgba(255, 255, 255, 0.56);
-      --glass-bg-strong: rgba(255, 255, 255, 0.74);
-      --glass-bg-open: rgba(255, 255, 255, 0.86);
       --glass-border: rgba(255, 255, 255, 0.75);
       --glass-shadow: 0 10px 34px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.92), inset 0 -1px 1px rgba(15, 118, 110, 0.06);
       --glass-shadow-sm: 0 4px 16px rgba(15, 23, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+      --apple-ease: cubic-bezier(0.32, 0.72, 0, 1);
       --spring: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -142,7 +140,7 @@
       backdrop-filter: blur(14px) saturate(160%);
       -webkit-backdrop-filter: blur(14px) saturate(160%);
       box-shadow: var(--glass-shadow-sm);
-      transition: transform 0.22s var(--spring), background 0.2s, box-shadow 0.2s, color 0.15s;
+      transition: transform 0.25s var(--apple-ease), background 0.2s, box-shadow 0.2s, color 0.15s;
       user-select: none;
       display: inline-flex;
       align-items: center;
@@ -152,6 +150,9 @@
       background: rgba(255, 255, 255, 0.88);
       transform: translateY(-1.5px);
       box-shadow: 0 8px 20px rgba(15, 23, 42, 0.09), inset 0 1px 1px #ffffff;
+    }
+    .legenda-item:active {
+      transform: scale(0.97);
     }
     .legenda-item.cor-ativa {
       background: linear-gradient(135deg, rgba(15, 118, 110, 0.92), rgba(13, 148, 136, 0.86));
@@ -177,7 +178,7 @@
         0 10px 28px rgba(15, 23, 42, 0.10),
         inset 0 1.5px 1px rgba(255, 255, 255, 0.95);
       z-index: 25;
-      transition: box-shadow 0.2s;
+      transition: box-shadow 0.25s var(--apple-ease);
     }
     .search-bar:focus-within {
       box-shadow:
@@ -211,7 +212,7 @@
       cursor: pointer;
       font-size: 13px;
       box-shadow: 0 4px 14px rgba(15, 118, 110, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-      transition: transform 0.2s var(--spring), box-shadow 0.2s, filter 0.15s;
+      transition: transform 0.22s var(--apple-ease), box-shadow 0.2s, filter 0.15s;
       white-space: nowrap;
     }
     .search-bar button:hover {
@@ -220,7 +221,7 @@
       box-shadow: 0 6px 18px rgba(15, 118, 110, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.5);
     }
     .search-bar button:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
 
     /* Grade de Pastas em 2 Linhas Uniformes */
@@ -248,7 +249,7 @@
       font-family: inherit;
       cursor: pointer;
       box-shadow: var(--glass-shadow-sm);
-      transition: transform 0.22s var(--spring), background 0.2s, box-shadow 0.2s, color 0.15s;
+      transition: transform 0.25s var(--apple-ease), background 0.2s, box-shadow 0.2s, color 0.15s;
       display: flex;
       width: 100%;
       align-items: center;
@@ -263,6 +264,9 @@
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.72));
       transform: translateY(-1.5px);
       box-shadow: 0 8px 20px rgba(15, 23, 42, 0.09), inset 0 1px 1px #ffffff;
+    }
+    .pasta-btn:active {
+      transform: scale(0.97);
     }
     .pasta-btn.ativa {
       background: linear-gradient(135deg, rgba(15, 118, 110, 0.94), rgba(13, 148, 136, 0.86));
@@ -332,7 +336,7 @@
       cursor: pointer;
       white-space: nowrap;
       box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-      transition: transform 0.2s var(--spring), filter 0.15s;
+      transition: transform 0.2s var(--apple-ease), filter 0.15s;
     }
     .banner-urgente button:hover {
       transform: scale(1.03);
@@ -422,11 +426,14 @@
       font-family: inherit;
       cursor: pointer;
       box-shadow: var(--glass-shadow-sm);
-      transition: transform 0.2s var(--spring), background 0.15s;
+      transition: transform 0.22s var(--apple-ease), background 0.15s;
     }
     .btn-expandir-todos:hover {
       transform: translateY(-1px);
       background: rgba(240, 253, 250, 0.96);
+    }
+    .btn-expandir-todos:active {
+      transform: scale(0.97);
     }
 
     /* Spinner de Carregamento */
@@ -443,7 +450,7 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Cards dos POPs em Liquid Glass */
+    /* Cards dos POPs em Liquid Glass com Transições Suaves Estilo Apple */
     details {
       border: 1px solid rgba(255, 255, 255, 0.84);
       border-left: 5px solid #cbd5e1;
@@ -454,26 +461,33 @@
       backdrop-filter: blur(18px) saturate(175%);
       -webkit-backdrop-filter: blur(18px) saturate(175%);
       box-shadow: var(--glass-shadow);
-      transition: transform 0.24s var(--spring), box-shadow 0.24s, background 0.2s;
+      transition: background 0.35s var(--apple-ease), box-shadow 0.35s var(--apple-ease), border-color 0.25s;
       scroll-margin-top: 90px;
     }
     details.card-vermelho { border-left-color: #dc2626; }
     details.card-amarelo  { border-left-color: #eab308; }
     details.card-verde    { border-left-color: #16a34a; }
 
-    details:hover {
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.84) 0%, rgba(255, 255, 255, 0.64) 100%);
-      transform: translateY(-1.5px);
+    details:not([open]):hover {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.66) 100%);
       box-shadow: 0 14px 36px rgba(15, 23, 42, 0.10), inset 0 1.5px 1px rgba(255, 255, 255, 0.96);
     }
 
-    details[open] {
-      background: linear-gradient(160deg, rgba(255, 255, 255, 0.90) 0%, rgba(255, 255, 255, 0.78) 100%);
-      transform: none;
-      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.10), inset 0 1.5px 1px #ffffff;
+    details[open]:not(.fechando) {
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.80) 100%);
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.11), inset 0 1.5px 1px #ffffff;
     }
     details.destaque-link {
       box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.42), 0 16px 40px rgba(15, 118, 110, 0.16);
+    }
+
+    /* Invólucro Animável do Conteúdo do POP */
+    .pop-body {
+      will-change: height;
+    }
+    .pop-body-inner {
+      display: flow-root;
+      will-change: transform, opacity;
     }
 
     /* Título Refinado + Botão Circular de Seta em Vidro */
@@ -485,6 +499,12 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 14px;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.2s var(--apple-ease), opacity 0.2s;
+    }
+    summary:active {
+      transform: scale(0.994);
     }
     summary::-webkit-details-marker {
       display: none;
@@ -560,13 +580,13 @@
       justify-content: center;
       flex-shrink: 0;
       margin-top: 2px;
-      transition: transform 0.26s var(--spring), background 0.15s, color 0.15s;
+      transition: transform 0.42s var(--apple-ease), background 0.28s var(--apple-ease), color 0.25s, border-color 0.25s;
     }
     summary:hover .chevron-card {
       background: rgba(240, 253, 250, 0.95);
       color: var(--verde);
     }
-    details[open] .chevron-card {
+    details[open]:not(.fechando) .chevron-card {
       transform: rotate(180deg);
       background: linear-gradient(135deg, rgba(15, 118, 110, 0.92), rgba(13, 148, 136, 0.86));
       border-color: rgba(255, 255, 255, 0.4);
@@ -580,7 +600,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      margin-top: 11px;
+      margin-top: 12px;
     }
     .tags-pop {
       display: flex;
@@ -597,12 +617,9 @@
       border-radius: 999px;
     }
     .acoes-pop {
-      display: none;
+      display: inline-flex;
       flex-wrap: wrap;
       gap: 6px;
-    }
-    details[open] .acoes-pop {
-      display: inline-flex;
     }
     .btn-acao-pop {
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.60));
@@ -615,13 +632,16 @@
       font-family: inherit;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05), inset 0 1px 0 #ffffff;
-      transition: transform 0.2s var(--spring), background 0.15s, color 0.15s, border-color 0.15s;
+      transition: transform 0.2s var(--apple-ease), background 0.15s, color 0.15s, border-color 0.15s;
     }
     .btn-acao-pop:hover {
       transform: translateY(-1px);
       background: rgba(240, 253, 250, 0.95);
       color: var(--verde);
       border-color: var(--verde);
+    }
+    .btn-acao-pop:active {
+      transform: scale(0.96);
     }
     .btn-acao-wpp:hover {
       background: rgba(240, 253, 244, 0.95);
@@ -759,7 +779,7 @@
       align-items: center;
       justify-content: center;
       z-index: 30;
-      transition: transform 0.22s var(--spring), filter 0.15s;
+      transition: transform 0.25s var(--apple-ease), filter 0.15s;
     }
     #btn-topo:hover {
       transform: translateY(-3px) scale(1.05);
@@ -901,6 +921,14 @@
         break-inside: auto !important;
         page-break-inside: auto !important;
       }
+      .pop-body {
+        height: auto !important;
+        overflow: visible !important;
+      }
+      .pop-body-inner {
+        opacity: 1 !important;
+        transform: none !important;
+      }
       summary, h3, .callout-meta, li, tr {
         break-inside: avoid;
         page-break-inside: avoid;
@@ -975,6 +1003,8 @@
     const API_URL = 'https://script.google.com/macros/s/AKfycbwIvQR1jsgLpoJDK19AFlf7013B3N9DetJtyIf79e_Dag_CIcLAXOkiBmI3LDoK0ZXv6Q/exec';
     const CACHE_KEY = 'pop_saude_jf_cache_v2';
     const FONT_KEY = 'pop_saude_jf_font_size';
+    const APPLE_EASE = 'cubic-bezier(0.32, 0.72, 0, 1)';
+    const REDUZIR_MOVIMENTO = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const PASTAS = [
       'TODOS',
@@ -1073,6 +1103,114 @@
             '<div class="erro">Não foi possível carregar os POPs automaticamente. Verifique a conexão com o Apps Script.</div>';
         }
       });
+
+    /* Controlador de Animação Fluida Estilo Apple para os Cards */
+    function definirEstadoCard(details, abrir, animar = true) {
+      const body = details.querySelector('.pop-body');
+      const inner = details.querySelector('.pop-body-inner');
+      if (!body || !inner) {
+        details.open = abrir;
+        return;
+      }
+
+      const cancelarAnimacoes = () => {
+        if (details._animBody) {
+          details._animBody.onfinish = null;
+          details._animBody.cancel();
+          details._animBody = null;
+        }
+        if (details._animInner) {
+          details._animInner.cancel();
+          details._animInner = null;
+        }
+      };
+
+      if (!animar || REDUZIR_MOVIMENTO || typeof body.animate !== 'function') {
+        cancelarAnimacoes();
+        details.classList.remove('fechando');
+        body.style.height = '';
+        body.style.overflow = '';
+        details._estado = abrir ? 'aberto' : 'fechado';
+        details.open = abrir;
+        return;
+      }
+
+      if (abrir) {
+        const alturaInicial = details.open ? body.getBoundingClientRect().height : 0;
+        const opacidadeInicial = details.open ? (parseFloat(getComputedStyle(inner).opacity) || 0) : 0;
+
+        cancelarAnimacoes();
+        details.open = true;
+        details.classList.remove('fechando');
+        details._estado = 'abrindo';
+
+        body.style.height = '';
+        const alturaFinal = inner.getBoundingClientRect().height;
+        const duracao = Math.min(500, Math.max(360, 310 + alturaFinal * 0.12));
+
+        body.style.overflow = 'hidden';
+
+        const animBody = body.animate(
+          [{ height: alturaInicial + 'px' }, { height: alturaFinal + 'px' }],
+          { duration: duracao, easing: APPLE_EASE }
+        );
+        const animInner = inner.animate(
+          [
+            { opacity: opacidadeInicial, transform: 'translateY(-8px)' },
+            { opacity: 1, transform: 'translateY(0px)' }
+          ],
+          { duration: Math.round(duracao * 0.9), easing: APPLE_EASE }
+        );
+
+        details._animBody = animBody;
+        details._animInner = animInner;
+
+        animBody.onfinish = () => {
+          body.style.height = '';
+          body.style.overflow = '';
+          details._animBody = null;
+          details._animInner = null;
+          details._estado = 'aberto';
+        };
+      } else {
+        if (!details.open) return;
+
+        const alturaInicial = body.getBoundingClientRect().height;
+        const opacidadeInicial = parseFloat(getComputedStyle(inner).opacity) || 1;
+
+        cancelarAnimacoes();
+        details.classList.add('fechando');
+        details._estado = 'fechando';
+
+        const duracao = Math.min(400, Math.max(280, 240 + alturaInicial * 0.08));
+        body.style.overflow = 'hidden';
+
+        const animBody = body.animate(
+          [{ height: alturaInicial + 'px' }, { height: '0px' }],
+          { duration: duracao, easing: APPLE_EASE }
+        );
+        const animInner = inner.animate(
+          [
+            { opacity: opacidadeInicial, transform: 'translateY(0px)' },
+            { opacity: 0, transform: 'translateY(-6px)' }
+          ],
+          { duration: Math.round(duracao * 0.78), easing: APPLE_EASE }
+        );
+
+        details._animBody = animBody;
+        details._animInner = animInner;
+
+        animBody.onfinish = () => {
+          details.open = false;
+          details.classList.remove('fechando');
+          body.style.height = '';
+          body.style.overflow = '';
+          details._animBody = null;
+          details._animInner = null;
+          details._estado = 'fechado';
+        };
+      }
+    }
 
     function processarDados(dados, preservarAbertos) {
       const abertosAntes = new Set();
@@ -1335,7 +1473,7 @@
     function alternarExpandirTodos() {
       todosExpandidos = !todosExpandidos;
       const cards = document.querySelectorAll('#lista details');
-      cards.forEach(c => c.open = todosExpandidos);
+      cards.forEach(c => definirEstadoCard(c, todosExpandidos, true));
       const btn = document.getElementById('btn-expandir-todos');
       btn.textContent = todosExpandidos ? 'Recolher todos' : 'Expandir todos';
     }
@@ -1371,7 +1509,7 @@
     function imprimirPop(id) {
       const card = document.getElementById(id);
       if (!card) return;
-      card.open = true;
+      definirEstadoCard(card, true, false);
       document.body.classList.add('imprimindo-unico');
       card.classList.add('pop-imprimindo');
       window.print();
@@ -1400,7 +1538,7 @@
       }
 
       if (card) {
-        card.open = true;
+        definirEstadoCard(card, true, true);
         card.classList.add('destaque-link');
         setTimeout(() => {
           card.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1463,8 +1601,12 @@
         const details = document.createElement('details');
         details.id = pop.id;
         details.className = 'card-' + pop.cor;
-        if (abrirAutomatico || (abertosAntes && abertosAntes.has(pop.id))) {
+        const iniciaAberto = abrirAutomatico || (abertosAntes && abertosAntes.has(pop.id));
+        if (iniciaAberto) {
           details.open = true;
+          details._estado = 'aberto';
+        } else {
+          details._estado = 'fechado';
         }
 
         const summary = document.createElement('summary');
@@ -1492,7 +1634,19 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </span>
         `;
+
+        summary.addEventListener('click', (e) => {
+          e.preventDefault();
+          const deveAbrir = !details.open || details._estado === 'fechando';
+          definirEstadoCard(details, deveAbrir, true);
+        });
+
         details.appendChild(summary);
+
+        const popBody = document.createElement('div');
+        popBody.className = 'pop-body';
+        const popBodyInner = document.createElement('div');
+        popBodyInner.className = 'pop-body-inner';
 
         const metaRow = document.createElement('div');
         metaRow.className = 'topo-card-meta';
@@ -1517,7 +1671,7 @@
           <button type="button" class="btn-acao-pop" onclick="imprimirPop('${pop.id}')" title="Imprimir ou salvar em PDF apenas este POP">🖨️ Imprimir / PDF</button>
         `;
         metaRow.appendChild(acoesDiv);
-        details.appendChild(metaRow);
+        popBodyInner.appendChild(metaRow);
 
         const divConteudo = document.createElement('div');
         divConteudo.className = 'conteudo-pop';
@@ -1579,7 +1733,9 @@
           }
         });
 
-        details.appendChild(divConteudo);
+        popBodyInner.appendChild(divConteudo);
+        popBody.appendChild(popBodyInner);
+        details.appendChild(popBody);
         container.appendChild(details);
       });
     }
